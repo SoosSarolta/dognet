@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DogNet</string>
+    <string name="created_by">Created by Sarolta Soos</string>
+    <string name="welcome">Welcome to DogNet!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="4"
+    android:background="@color/colorAccent">
+
+    <ImageButton
+        android:id="@+id/vetImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:alpha="10"
+        android:src="@drawable/dognet_vet"
+        android:background="@drawable/shape"/>
+
+    <ImageButton
+        android:id="@+id/trainerImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:alpha="10"
+        android:src="@drawable/dognet_trainer"
+        android:background="@drawable/shape"/>
+
+    <ImageButton
+        android:id="@+id/lostDogImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:alpha="10"
+        android:src="@drawable/dognet_lost"
+        android:background="@drawable/shape"/>
+
+    <ImageButton
+        android:id="@+id/foundDogImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:alpha="10"
+        android:src="@drawable/dognet_founddog"
+        android:background="@drawable/shape"/>
+
+</LinearLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/chooserFragment">
+    <fragment
+        android:id="@+id/chooserFragment"
+        android:name="hu.bme.aut.dognet.ChooserFragment"
+        android:label="ChooserFragment" >
+        <action
+            android:id="@+id/action_chooserFragment_to_vetMainFragment"
+            app:destination="@id/vetMainFragment" />
+        <action
+            android:id="@+id/action_chooserFragment_to_trainerMainFragment"
+            app:destination="@id/trainerMainFragment" />
+        <action
+            android:id="@+id/action_chooserFragment_to_lostMainFragment"
+            app:destination="@id/lostMainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/vetMainFragment"
+        android:name="hu.bme.aut.dognet.vet.VetMainFragment"
+        android:label="VetMainFragment"
+        tools:layout="@layout/fragment_vet_main" />
+    <fragment
+        android:id="@+id/trainerMainFragment"
+        android:name="hu.bme.aut.dognet.trainer.TrainerMainFragment"
+        android:label="fragment_trainer_main"
+        tools:layout="@layout/fragment_trainer_main" />
+    <fragment
+        android:id="@+id/lostMainFragment"
+        android:name="hu.bme.aut.dognet.lost_n_found.LostMainFragment"
+        android:label="fragment_lost_main"
+        tools:layout="@layout/fragment_lost_main" />
+</navigation>
