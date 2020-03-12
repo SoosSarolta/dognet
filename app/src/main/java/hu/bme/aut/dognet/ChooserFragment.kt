@@ -23,24 +23,28 @@ class ChooserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vetButton = view!!.findViewById(R.id.vetImageButton)
-        trainerButton = view!!.findViewById(R.id.trainerImageButton)
-        lostButton = view!!.findViewById(R.id.lostDogImageButton)
-        foundButton = view!!.findViewById(R.id.foundDogImageButton)
+        (requireActivity() as MainActivity).title = "DogNet"
+
+        vetButton = view.findViewById(R.id.vetImageButton)
+        trainerButton = view.findViewById(R.id.trainerImageButton)
+        lostButton = view.findViewById(R.id.lostDogImageButton)
+        foundButton = view.findViewById(R.id.foundDogImageButton)
 
         vetButton.setOnClickListener {
-            val action = ChooserFragmentDirections.actionChooserFragmentToVetMainFragment()
-            view.findNavController().navigate(action)
+            view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToVetMainFragment())
         }
 
         trainerButton.setOnClickListener {
-            val action = ChooserFragmentDirections.actionChooserFragmentToTrainerMainFragment()
-            view.findNavController().navigate(action)
+            view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToTrainerMainFragment())
         }
 
         lostButton.setOnClickListener {
-            val action = ChooserFragmentDirections.actionChooserFragmentToLostMainFragment()
-            view.findNavController().navigate(action)
+            view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToLostMainFragment())
         }
+
+/*        foundButton.setOnClickListener {
+            view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToLostMainFragment())
+
+        }*/
     }
 }

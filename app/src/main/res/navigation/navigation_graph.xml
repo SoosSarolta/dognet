@@ -6,8 +6,7 @@
     app:startDestination="@id/chooserFragment">
     <fragment
         android:id="@+id/chooserFragment"
-        android:name="hu.bme.aut.dognet.ChooserFragment"
-        android:label="ChooserFragment" >
+        android:name="hu.bme.aut.dognet.ChooserFragment" >
         <action
             android:id="@+id/action_chooserFragment_to_vetMainFragment"
             app:destination="@id/vetMainFragment" />
