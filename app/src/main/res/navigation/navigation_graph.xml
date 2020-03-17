@@ -20,16 +20,13 @@
     <fragment
         android:id="@+id/vetMainFragment"
         android:name="hu.bme.aut.dognet.vet.VetMainFragment"
-        android:label="VetMainFragment"
         tools:layout="@layout/fragment_vet_main" />
     <fragment
         android:id="@+id/trainerMainFragment"
         android:name="hu.bme.aut.dognet.trainer.TrainerMainFragment"
-        android:label="fragment_trainer_main"
         tools:layout="@layout/fragment_trainer_main" />
     <fragment
         android:id="@+id/lostMainFragment"
         android:name="hu.bme.aut.dognet.lost_n_found.LostMainFragment"
-        android:label="fragment_lost_main"
         tools:layout="@layout/fragment_lost_main" />
 </navigation>
