@@ -9,11 +9,10 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
+import kotlinx.android.synthetic.main.fragment_vet_main.*
 
 
 class VetMainFragment : Fragment() {
-
-    private lateinit var floatingActionButton: FloatingActionButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_vet_main, container, false)
@@ -22,9 +21,7 @@ class VetMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        floatingActionButton = view.findViewById(R.id.fab)
-
-        floatingActionButton.setOnClickListener {
+        fab.setOnClickListener {
             val dialogFragment = ChipReadDialogFragment()
             fragmentManager?.let { dialogFragment.show(it, "dialog") }
         }

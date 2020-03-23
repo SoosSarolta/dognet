@@ -9,14 +9,10 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.fragment_chooser.*
 
 
 class ChooserFragment : Fragment() {
-
-    private lateinit var vetButton: Button
-    private lateinit var trainerButton: Button
-    private lateinit var lostButton: Button
-    private lateinit var foundButton: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_chooser, container, false)
@@ -27,11 +23,6 @@ class ChooserFragment : Fragment() {
 
         (requireActivity() as MainActivity).title = "DogNet"
 
-        vetButton = view.findViewById(R.id.vetButton)
-        trainerButton = view.findViewById(R.id.trainerButton)
-        lostButton = view.findViewById(R.id.lostDogButton)
-        foundButton = view.findViewById(R.id.foundDogButton)
-
         vetButton.setOnClickListener {
             view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToVetMainFragment())
         }
@@ -40,11 +31,11 @@ class ChooserFragment : Fragment() {
             view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToTrainerMainFragment())
         }
 
-        lostButton.setOnClickListener {
+        lostDogButton.setOnClickListener {
             view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToLostMainFragment())
         }
 
-/*        foundButton.setOnClickListener {
+/*        foundDogButton.setOnClickListener {
             view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToLostMainFragment())
 
         }*/
