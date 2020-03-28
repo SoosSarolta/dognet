@@ -1,32 +1,33 @@
 package hu.bme.aut.dognet.dialog_fragment
 
 import android.app.Dialog
-import android.app.PendingIntent
-import android.content.Intent
+import android.content.Context
+import android.content.DialogInterface
 import android.nfc.NdefMessage
-import android.nfc.NfcAdapter
 import android.os.Bundle
+import android.os.Parcelable
+import android.os.Vibrator
+import android.util.Log
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import kotlinx.android.synthetic.main.chipread_dialog_fragment.*
+import org.ndeftools.Message
+import org.ndeftools.wellknown.TextRecord
 
 class ChipReadDialogFragment : DialogFragment() {
 
-    //private lateinit var nfcAdapter: NfcAdapter
-    //private lateinit var nfcPendingIntent: PendingIntent
+    private lateinit var builder: Dialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity!!.layoutInflater.inflate(R.layout.chipread_dialog_fragment, LinearLayout(activity), false)
 
-        val builder = Dialog(activity!!)
+        builder = Dialog(activity!!)
         builder.setContentView(view)
 
-        //nfcAdapter = NfcAdapter.getDefaultAdapter(activity)
-        //nfcPendingIntent = PendingIntent.getActivity(activity, 0, Intent(activity, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0)
-
         builder.btnStart.setOnClickListener {
-            // TODO
+            (parentFragment!!.activity as MainActivity).enableForegroundMode()
         }
 
         builder.btnCancel.setOnClickListener {
@@ -36,15 +37,34 @@ class ChipReadDialogFragment : DialogFragment() {
         return builder
     }
 
-/*    private fun readChipNum() {
-        if (activity!!.intent.action == NfcAdapter.ACTION_NDEF_DISCOVERED) {
-            val parcelableArray = activity!!.intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-            parcelableArray?.forEach { it ->
-                val ndefMsg = it as NdefMessage
-                ndefMsg.records.forEach {
-                    chipEditText.append("${String(it.payload)}\n")
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        (parentFragment!!.activity as MainActivity).disableForegroundMode()
+    }
+
+    fun processNFC(messages: Array<Parcelable>?) {
+        Log.d("ChipReaderFragment", "NFC action started!")
+
+        if (messages != null) {
+            Log.d("ChipReaderFragment", "Found " + messages.size + " NDEF messages")
+
+            vibrate()
+
+            for (m in messages) {
+                val records = Message(m as NdefMessage)
+
+                for (r in records) {
+                    if (r is TextRecord) {
+                        Log.d("Main", "Message: " + r.text)
+                        builder.chipEditText.setText(r.text)
+                    }
                 }
             }
         }
-    }*/
+    }
+
+    private fun vibrate() {
+        val vibe: Vibrator = activity!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibe.vibrate(500)
+    }
 }
