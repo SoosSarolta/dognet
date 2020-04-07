@@ -5,13 +5,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -77,7 +73,6 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        //val fragment = supportFragmentManager.findFragmentById(R.id.chooserFragment) as ChooserFragment
         val fragment = supportFragmentManager.fragments[0].childFragmentManager.fragments[1] as ChipReadDialogFragment
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent!!.action)

@@ -12,8 +12,16 @@
     <string name="lost_dog">Lost dog</string>
     <string name="found_dog">Found dog</string>
     <string name="please_scan_for_chip_number">Please scan for chip number!</string>
-    <string name="chip">Chip:</string>
+    <string name="chip">Chip: </string>
     <string name="ok">OK</string>
     <string name="start">Start</string>
     <string name="cancel">Cancel</string>
+    <string name="pet_name">Pet name: </string>
+    <string name="owner_name">Owner name: </string>
+    <string name="please_fill_in_the_form_below">Please fill in the form below!</string>
+    <string name="breed">Breed: </string>
+    <string name="date_of_birth">Date of birth: </string>
+    <string name="address">Address: </string>
+    <string name="phone_number">Phone: </string>
+    <string name="sex">Sex:</string>
 </resources>
