@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
 import hu.bme.aut.dognet.R
@@ -41,7 +43,7 @@ class VetMainFragment : Fragment() {
 
         db = FirebaseDatabase.getInstance().reference
 
-        vetAdapter = VetAdapter(activity!!.applicationContext)
+        vetAdapter = VetAdapter(activity!!.applicationContext) { item: VetDbEntry -> vetDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
             reverseLayout = true
             stackFromEnd = true
@@ -116,11 +118,11 @@ class VetMainFragment : Fragment() {
 
     fun openVetDataForm() {
         val dialogFragment = VetFormDialogFragment()
-        fragmentManager?.let { dialogFragment.show(it, "data_dialog") }
+        fragmentManager?.let { dialogFragment.show(it, "data_dialog_vet") }
     }
 
     private fun initVetEntryListener() {
-        FirebaseDatabase.getInstance().getReference("vetDbEntry")
+        FirebaseDatabase.getInstance().getReference(VET_FIREBASE_ENTRY)
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                     val newEntry = dataSnapshot.getValue<VetDbEntry>(VetDbEntry::class.java)
@@ -135,5 +137,9 @@ class VetMainFragment : Fragment() {
 
                 override fun onCancelled(p0: DatabaseError) {}
             })
+    }
+
+    private fun vetDbEntryClicked(item: VetDbEntry) {
+        findNavController().navigate(VetMainFragmentDirections.actionVetMainFragmentToVetDetailsFragment(item.chipNum))
     }
 }

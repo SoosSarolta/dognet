@@ -20,13 +20,38 @@
     <fragment
         android:id="@+id/vetMainFragment"
         android:name="hu.bme.aut.dognet.vet.VetMainFragment"
-        tools:layout="@layout/fragment_vet_main" />
+        tools:layout="@layout/fragment_vet_main" >
+        <action
+            android:id="@+id/action_vetMainFragment_to_vetDetailsFragment"
+            app:destination="@id/vetDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/trainerMainFragment"
         android:name="hu.bme.aut.dognet.trainer.TrainerMainFragment"
-        tools:layout="@layout/fragment_trainer_main" />
+        tools:layout="@layout/fragment_trainer_main" >
+        <action
+            android:id="@+id/action_trainerMainFragment_to_trainerDetailsFragment"
+            app:destination="@id/trainerDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/lostMainFragment"
         android:name="hu.bme.aut.dognet.lost_n_found.LostMainFragment"
         tools:layout="@layout/fragment_lost_main" />
+    <fragment
+        android:id="@+id/vetDetailsFragment"
+        android:name="hu.bme.aut.dognet.vet.VetDetailsFragment"
+        tools:layout="@layout/fragment_vet_details" >
+        <argument android:name="itemChipNum"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainerDetailsFragment"
+        android:name="hu.bme.aut.dognet.trainer.TrainerDetailsFragment"
+        tools:layout="@layout/fragment_trainer_details" >
+        <argument
+            android:name="itemChipNum"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

@@ -1,22 +1,19 @@
-package hu.bme.aut.dognet.vet.adapter
+package hu.bme.aut.dognet.trainer.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Adapter
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.dognet.R
-import hu.bme.aut.dognet.vet.model.VetDbEntry
+import hu.bme.aut.dognet.trainer.model.TrainerDbEntry
 import kotlinx.android.synthetic.main.vet_db_etry_list_item.view.*
 
-class VetAdapter(private val context: Context, private val clickListener: (VetDbEntry) -> Unit) : RecyclerView.Adapter<VetAdapter.ViewHolder>() {
+class TrainerAdapter(private val context: Context, private val clickListener: (TrainerDbEntry) -> Unit): RecyclerView.Adapter<TrainerAdapter.ViewHolder>() {
 
-    private val petsList: MutableList<VetDbEntry> = mutableListOf()
+    private val petsList: MutableList<TrainerDbEntry> = mutableListOf()
     private var lastPosition = -1
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,15 +21,15 @@ class VetAdapter(private val context: Context, private val clickListener: (VetDb
         val tvPetName: TextView = itemView.tvPetName
         val tvOwnerName: TextView = itemView.tvOwnerName
 
-        fun bind(item: VetDbEntry, clickListener: (VetDbEntry) -> Unit) {
-           itemView.setOnClickListener {
-               clickListener(item)
-           }
+        fun bind(item: TrainerDbEntry, clickListener: (TrainerDbEntry) -> Unit) {
+            itemView.setOnClickListener {
+                clickListener(item)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.vet_db_etry_list_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.trainer_db_entry_list_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -49,10 +46,10 @@ class VetAdapter(private val context: Context, private val clickListener: (VetDb
 
     override fun getItemCount() = petsList.size
 
-    fun addEntry(vetDbEntry: VetDbEntry?) {
-        vetDbEntry ?: return
+    fun addEntry(trainerDbEntry: TrainerDbEntry?) {
+        trainerDbEntry ?: return
 
-        petsList.add(vetDbEntry)
+        petsList.add(trainerDbEntry)
         notifyDataSetChanged()
     }
 

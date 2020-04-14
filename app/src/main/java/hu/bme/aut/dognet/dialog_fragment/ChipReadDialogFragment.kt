@@ -48,10 +48,9 @@ class ChipReadDialogFragment : DialogFragment() {
                 }
                 else if (f is TrainerMainFragment) {
                     dismiss()
-                    // TODO ha az adott chip-szám még nem szerepel az adatbázisban
-
+                    if (!f.checkEntryAlreadyInDb(chipNum))
+                        f.openTrainerDataForm()
                 }
-                // TODO adatbázislista mutatása
                 chipRead = false
             }
         }
