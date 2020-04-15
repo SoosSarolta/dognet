@@ -10,17 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
+import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
-import hu.bme.aut.dognet.dialog_fragment.TrainerFormDialogFragment
+import hu.bme.aut.dognet.dialog_fragment.trainer.TrainerFormDialogFragment
 import hu.bme.aut.dognet.trainer.adapter.TrainerAdapter
 import hu.bme.aut.dognet.trainer.model.TrainerDbEntry
+import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.TRAINER_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_trainer_main.*
 
 
 class TrainerMainFragment : Fragment() {
-    lateinit var db: DatabaseReference
+    //lateinit var db: DatabaseReference
     lateinit var trainerAdapter: TrainerAdapter
 
     lateinit var chip: String
@@ -37,7 +39,7 @@ class TrainerMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        db = FirebaseDatabase.getInstance().reference
+        //db = FirebaseDatabase.getInstance().reference
 
         trainerAdapter = TrainerAdapter(activity!!.applicationContext) { item: TrainerDbEntry -> trainerDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
@@ -55,7 +57,7 @@ class TrainerMainFragment : Fragment() {
     }
 
     private fun addDbEntry() {
-        db.child(TRAINER_FIREBASE_ENTRY).push().key ?: return
+        DB.child(TRAINER_FIREBASE_ENTRY).push().key ?: return
 
         val entry = TrainerDbEntry.create()
 
@@ -66,7 +68,7 @@ class TrainerMainFragment : Fragment() {
         entry.phoneNum = this.phone
         entry.group = this.group
 
-        val newEntry = db.child(TRAINER_FIREBASE_ENTRY).push()
+        val newEntry = DB.child(TRAINER_FIREBASE_ENTRY).push()
         newEntry.setValue(entry)
         Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
     }
@@ -85,23 +87,20 @@ class TrainerMainFragment : Fragment() {
         addDbEntry()
     }
 
-    fun checkEntryAlreadyInDb(chipNum: String): Boolean {
+    fun checkEntryAlreadyInDb(chipNum: String, callback: Callback) {
         chip = chipNum
-        var flag = 0
 
-        val chipNumRef = db.child(TRAINER_FIREBASE_ENTRY).child(chipNum)
+        val chipNumRef = DB.child(TRAINER_FIREBASE_ENTRY).child(chipNum)
         chipNumRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.d("Firebase", "Database error!")
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists())
-                    flag = 1
+                if (!snapshot.exists())
+                    callback.onCallback()
             }
         })
-
-        return flag == 1
     }
 
     fun openTrainerDataForm() {

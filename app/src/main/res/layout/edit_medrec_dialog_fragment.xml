@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dialog_fragment_padding"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_note"
+        android:layout_marginBottom="@dimen/button_margintop_padding"
+        android:textSize="@dimen/dialog_fragment_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent2" />
+
+    <EditText
+        android:id="@+id/etMedRec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine|textCapSentences"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:textSize="@dimen/dialog_fragment_text_size"
+        android:background="@color/colorAccent2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dialog_fragment_margin">
+
+        <Button
+            android:id="@+id/btnSubmitMedRec"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/ok"
+            android:textColor="@color/colorAccent2"
+            android:layout_marginEnd="55dp" />
+
+        <Button
+            android:id="@+id/btnCancelMedRec"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent2"
+            android:text="@string/cancel"
+            android:textColor="@color/colorAccent2" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -17,7 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-
+// TODO back arrow opens navigation drawer in fragments
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

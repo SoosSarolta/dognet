@@ -7,8 +7,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.google.android.play.core.internal.i
+import com.google.android.play.core.splitinstall.f
+import com.google.android.play.core.splitinstall.x
+import com.google.firebase.database.FirebaseDatabase
 import hu.bme.aut.dognet.R
+import hu.bme.aut.dognet.dialog_fragment.vet.EditMedRecordDialogFragment
+import hu.bme.aut.dognet.dialog_fragment.vet.EditVaccinationsDialogFragment
+import hu.bme.aut.dognet.util.DB
+import hu.bme.aut.dognet.util.VET_FIREBASE_ENTRY
+import kotlinx.android.synthetic.main.edit_medrec_dialog_fragment.*
+import kotlinx.android.synthetic.main.fragment_vet_details.*
 
+// TODO edittexts show only one line upon loading
 class VetDetailsFragment : Fragment() {
 
     private val args: VetDetailsFragmentArgs by navArgs()
@@ -20,6 +31,75 @@ class VetDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Toast.makeText(this.activity!!, args.itemChipNum.toString(), Toast.LENGTH_LONG).show()
+        tvDetailsChip.text = args.itemChipNum.toString()
+        tvDetailsPetName.text = args.petName.toString()
+        tvDetailsBreed.text = args.breed.toString()
+        tvDetailsSex.text = args.sex.toString()
+        tvDetailsDob.text = args.dob.toString()
+        tvDetailsOwnerName.text = args.ownerName.toString()
+        tvDetailsAddress.text = args.ownerAddress.toString()
+        tvDetailsPhone.text = args.ownerPhone.toString()
+
+        for (x in args.vaccNames.indices)
+            etDetailsVaccinations.setText(args.vaccNames[x] + " - " + args.vaccDates[x] + "\n")
+
+        for (x in args.medRecords)
+            etDetailsMedRecord.setText(x + "\n")
+
+        btnEditVaccinations.setOnClickListener {
+            val dialogFragment = EditVaccinationsDialogFragment()
+            fragmentManager?.let { dialogFragment.show(it, "vacc_dialog_vet") }
+        }
+
+        btnEditMedRecord.setOnClickListener {
+            val dialogFragment = EditMedRecordDialogFragment()
+
+            val myArgs = Bundle()
+            myArgs.putString("chipNum", args.itemChipNum.toString())
+            dialogFragment.arguments = myArgs
+
+            fragmentManager?.let { dialogFragment.show(it, "med_dialog_vet") }
+        }
+    }
+
+    fun setVaccination(vacc: MutableMap<String, String>) {
+        val ref = DB.child(VET_FIREBASE_ENTRY).child(args.itemChipNum.toString())
+        val update: MutableMap<String, MutableMap<String, String>> = HashMap()
+
+        vacc.forEach {  etDetailsVaccinations.setText(etDetailsVaccinations.text.toString() + it.key + " - " + it.value + "\n") }
+
+        for (x in args.vaccNames.indices)
+            vacc[args.vaccNames[x]] = args.vaccDates[x]
+
+        update["vaccinations"] = vacc
+
+        ref.updateChildren(update as Map<String, Any>)
+
+        // TODO reach VetMainFragment
+        /*val f = parentFragment?.parentFragmentManager?.fragments
+
+        if (f is VetMainFragment)
+            f.setVaccinations(vacc)*/
+    }
+
+    fun setMedRecord(rec: MutableList<String>) {
+        val ref = DB.child(VET_FIREBASE_ENTRY).child(args.itemChipNum.toString())
+        val update: MutableMap<String, MutableList<String>> = HashMap()
+
+        for (r in rec)
+            etDetailsMedRecord.setText(etDetailsMedRecord.text.toString() + r + "\n")
+
+        for (x in args.medRecords)
+            rec.add(x)
+
+        update["medRecord"] = rec
+
+        ref.updateChildren(update as Map<String, Any>)
+
+        // TODO reach VetMainFragment
+        /*val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
+
+        if (f is VetMainFragment)
+            f.setMedRecord(rec)*/
     }
 }

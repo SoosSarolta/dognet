@@ -1,6 +1,7 @@
 package hu.bme.aut.dognet.vet.model
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 class VetDbEntry {
     companion object Factory {
@@ -15,6 +16,6 @@ class VetDbEntry {
     var ownerName: String? = null
     var ownerAddress: String? = null
     var phoneNum: String? = null
-    var vaccinations: Map<String, Date> = HashMap()
-    var medRecord: String? = null
+    var vaccinations: MutableMap<String, String> = HashMap()
+    var medRecord: MutableList<String> = ArrayList()
 }

@@ -1,4 +1,4 @@
-package hu.bme.aut.dognet.dialog_fragment
+package hu.bme.aut.dognet.dialog_fragment.vet
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -11,9 +11,9 @@ import androidx.fragment.app.DialogFragment
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.vet.VetMainFragment
 import kotlinx.android.synthetic.main.data_form_vet_dialog_fragment.*
-import java.text.SimpleDateFormat
 import java.util.*
 
+// TODO sex of pet to be chosen with checkbox
 class VetFormDialogFragment : DialogFragment() {
 
     private lateinit var builder: Dialog
@@ -35,8 +35,10 @@ class VetFormDialogFragment : DialogFragment() {
             val currentDay = currentDate.get(Calendar.DAY_OF_MONTH)
 
             val datePicker = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, myear, mmonth, mday ->
-                builder.dobEditText.setText("" + mday + " - " + mmonth + " - " + myear)
+                builder.dobEditText.setText("" + mday + " - " + (mmonth + 1) + " - " + myear)
             }, currentYear, currentMonth, currentDay)
+
+            datePicker.datePicker.maxDate = currentDate.timeInMillis
 
             datePicker.show()
         }
@@ -48,7 +50,7 @@ class VetFormDialogFragment : DialogFragment() {
                 if (builder.dobEditText.text.isNotEmpty())
                     dob = builder.dobEditText.text.toString()
 
-                dismiss() // ???
+                dismiss()
 
                 val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
@@ -57,6 +59,7 @@ class VetFormDialogFragment : DialogFragment() {
                     builder.addressEditText.text.toString(), builder.phoneNumEditText.text.toString())
             }
             else
+                // TODO nice error message instead
                 Toast.makeText(activity!!.applicationContext, "Compulsory areas are blank!", Toast.LENGTH_LONG).show()
         }
 

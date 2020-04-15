@@ -25,4 +25,9 @@
     <string name="phone_number">Phone: </string>
     <string name="sex">Sex:</string>
     <string name="group">Group:</string>
+    <string name="vaccinations">Vaccinations:</string>
+    <string name="medical_record">Medical record:</string>
+    <string name="vacc_name">Vaccination name:</string>
+    <string name="date">Date:</string>
+    <string name="new_note">New note:</string>
 </resources>

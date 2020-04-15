@@ -1,4 +1,4 @@
-package hu.bme.aut.dognet.dialog_fragment
+package hu.bme.aut.dognet.dialog_fragment.trainer
 
 import android.app.Dialog
 import android.os.Bundle

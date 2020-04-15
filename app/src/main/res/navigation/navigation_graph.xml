@@ -44,6 +44,43 @@
         <argument android:name="itemChipNum"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="petName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="breed"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="sex"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="ownerName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="ownerAddress"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="ownerPhone"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="dob"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="vaccNames"
+            app:argType="string[]" />
+        <argument
+            android:name="vaccDates"
+            app:argType="string[]" />
+        <argument
+            android:name="medRecords"
+            app:argType="string[]" />
     </fragment>
     <fragment
         android:id="@+id/trainerDetailsFragment"
