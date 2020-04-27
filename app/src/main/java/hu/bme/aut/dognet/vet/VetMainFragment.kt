@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
+import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
@@ -54,6 +55,8 @@ class VetMainFragment : Fragment() {
             stackFromEnd = true
         }
         recyclerView.adapter = vetAdapter
+
+        (activity as MainActivity).setDrawerEnabled(false)
 
         fab.setOnClickListener {
             val dialogFragment = ChipReadDialogFragment()

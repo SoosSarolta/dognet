@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,7 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-// TODO back arrow opens navigation drawer in fragments
+// TODO fill navigation drawer with use cases
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -58,6 +59,22 @@ class MainActivity : AppCompatActivity() {
             drawer_layout.closeDrawer(GravityCompat.START)
         else
             super.onBackPressed()
+    }
+
+    fun setDrawerEnabled(enabled: Boolean) {
+        if (enabled) {
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            actionBarDrawerToggle.isDrawerIndicatorEnabled = true
+            actionBarDrawerToggle.syncState()
+        }
+        else {
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            actionBarDrawerToggle.isDrawerIndicatorEnabled = false
+            actionBarDrawerToggle.setToolbarNavigationClickListener {
+                onBackPressed()
+            }
+            actionBarDrawerToggle.syncState()
+        }
     }
 
     fun enableForegroundMode() {

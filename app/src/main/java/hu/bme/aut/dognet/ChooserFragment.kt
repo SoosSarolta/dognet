@@ -20,6 +20,8 @@ class ChooserFragment : Fragment() {
 
         (requireActivity() as MainActivity).title = "DogNet"
 
+        (activity as MainActivity).setDrawerEnabled(true)
+
         vetButton.setOnClickListener {
             view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToVetMainFragment())
         }
