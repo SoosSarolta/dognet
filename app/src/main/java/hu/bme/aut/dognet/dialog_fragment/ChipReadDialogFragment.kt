@@ -11,16 +11,16 @@ import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
-import hu.bme.aut.dognet.trainer.TrainerMainFragment
+import hu.bme.aut.dognet.trainer.TrainerDetailsFragment
+import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.vet.VetMainFragment
 import kotlinx.android.synthetic.main.chipread_dialog_fragment.*
 import org.ndeftools.Message
 import org.ndeftools.wellknown.TextRecord
 
-// TODO notify user with toast if pet is already in DB
+// TODO notify user with toast if pet is already in DB (vet)
 class ChipReadDialogFragment : DialogFragment() {
 
     private lateinit var builder: Dialog
@@ -51,13 +51,12 @@ class ChipReadDialogFragment : DialogFragment() {
                             }
                         })
                 }
-                else if (f is TrainerMainFragment) {
+                else if (f is TrainerDetailsFragment) {
                     dismiss()
-                    f.checkEntryAlreadyInDb(chipNum, object : Callback {
-                        override fun onCallback() {
-                            f.openTrainerDataForm()
-                        }
-                    })
+                    if(!f.checkEntryAlreadyInList(chipNum))
+                        f.openTrainerDataForm()
+                    else
+                        Toast.makeText(activity, "Pet already added!", Toast.LENGTH_LONG).show()
                 }
 
                 chipRead = false

@@ -87,8 +87,47 @@
         android:name="hu.bme.aut.dognet.trainer.TrainerDetailsFragment"
         tools:layout="@layout/fragment_trainer_details" >
         <argument
-            android:name="itemChipNum"
+            android:name="itemDate"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="trainingGroup"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_trainerDetailsFragment_to_trainerDetailsDetailsFragment"
+            app:destination="@id/trainerDetailsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trainerDetailsDetailsFragment"
+        android:name="hu.bme.aut.dognet.trainer.TrainerDetailsDetailsFragment"
+        tools:layout="@layout/fragment_trainer_details_details" >
+        <argument
+            android:name="chip"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="petName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="breed"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="ownerName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="phone"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="group"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="trainingDates"
+            app:argType="string[]" />
     </fragment>
 </navigation>

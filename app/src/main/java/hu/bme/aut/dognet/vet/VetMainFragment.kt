@@ -21,6 +21,7 @@ import hu.bme.aut.dognet.vet.model.VetDbEntry
 import kotlinx.android.synthetic.main.fragment_vet_main.*
 
 // TODO migrate to firestore
+// TODO replace deprecated fragment manager calls
 class VetMainFragment : Fragment() {
     //lateinit var db: DatabaseReference
     //lateinit var db: FirebaseFirestore
@@ -108,7 +109,7 @@ class VetMainFragment : Fragment() {
         pets[this.chip] = entry
 
         val ref = DB.child(VET_FIREBASE_ENTRY)
-        ref.setValue(pets)
+        ref.updateChildren(pets as Map<String, Any>)
         Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
     }
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dialog_fragment_padding"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:text="@string/start_or_review"
+        android:textSize="@dimen/dialog_fragment_title_size"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialog_fragment_margin"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnStartNew"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/new_training"
+            android:textColor="@color/colorAccent2"
+            android:layout_marginEnd="45dp" />
+
+        <Button
+            android:id="@+id/btnReview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorAccent"
+            android:text="@string/review_training"
+            android:textColor="@color/colorAccent2" />
+
+    </LinearLayout>
+
+</LinearLayout>

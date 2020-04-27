@@ -11,6 +11,5 @@ class TrainerDbEntry {
     var ownerName: String? = null
     var phoneNum: String? = null
     var group: String? = null
-    var trainings: List<String> = ArrayList()
-    var notes: String? = null
+    var trainings: MutableList<String> = ArrayList()
 }

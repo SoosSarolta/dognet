@@ -30,4 +30,8 @@
     <string name="vacc_name">Vaccination name:</string>
     <string name="date">Date:</string>
     <string name="new_note">New note:</string>
+    <string name="start_or_review">Start a new session or review a saved one?</string>
+    <string name="new_training">New training</string>
+    <string name="review_training">Review training</string>
+    <string name="trainings">Trainings:</string>
 </resources>

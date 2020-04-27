@@ -4,22 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.google.android.play.core.internal.i
-import com.google.android.play.core.splitinstall.f
-import com.google.android.play.core.splitinstall.x
-import com.google.firebase.database.FirebaseDatabase
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.vet.EditMedRecordDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.vet.EditVaccinationsDialogFragment
 import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.VET_FIREBASE_ENTRY
-import kotlinx.android.synthetic.main.edit_medrec_dialog_fragment.*
 import kotlinx.android.synthetic.main.fragment_vet_details.*
 
 // TODO edittexts show only one line upon loading
+// TODO replace deprecated fragment manager calls
 class VetDetailsFragment : Fragment() {
 
     private val args: VetDetailsFragmentArgs by navArgs()

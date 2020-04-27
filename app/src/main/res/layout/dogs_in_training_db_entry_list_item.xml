@@ -14,10 +14,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/date" />
+            android:text="@string/chip" />
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -31,10 +31,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/group" />
+            android:text="@string/pet_name" />
 
         <TextView
-            android:id="@+id/tvGroup"
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

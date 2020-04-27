@@ -10,26 +10,25 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
-import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.R
-import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
-import hu.bme.aut.dognet.dialog_fragment.trainer.TrainerFormDialogFragment
+import hu.bme.aut.dognet.dialog_fragment.trainer.NewOrReviewTrainingDialogFragment
+import hu.bme.aut.dognet.dialog_fragment.trainer.NewTrainingDialogFragment
 import hu.bme.aut.dognet.trainer.adapter.TrainerAdapter
-import hu.bme.aut.dognet.trainer.model.TrainerDbEntry
+import hu.bme.aut.dognet.trainer.model.TrainingsDbEntry
+import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.TRAINER_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_trainer_main.*
 
-
+// TODO migrate to firestore
+// TODO replace deprecated fragment manager calls
+// TODO when coming back from TrainerDetailsFragment, don't show 'Start new or review' dialog
 class TrainerMainFragment : Fragment() {
-    //lateinit var db: DatabaseReference
     lateinit var trainerAdapter: TrainerAdapter
 
-    lateinit var chip: String
-    lateinit var petName: String
-    lateinit var breed: String
-    lateinit var ownerName: String
-    lateinit var phone: String
+    private lateinit var entry: TrainingsDbEntry
+
+    lateinit var date: String
     lateinit var group: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,9 +38,13 @@ class TrainerMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //db = FirebaseDatabase.getInstance().reference
+        val decisionDialogFragment = NewOrReviewTrainingDialogFragment()
+        fragmentManager?.let { decisionDialogFragment.show(it, "new_or_review_dialog") }
 
-        trainerAdapter = TrainerAdapter(activity!!.applicationContext) { item: TrainerDbEntry -> trainerDbEntryClicked(item) }
+    }
+
+    fun reviewTrainingBtnPressed() {
+        trainerAdapter = TrainerAdapter(activity!!.applicationContext) { item: TrainingsDbEntry -> trainerDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
             reverseLayout = true
             stackFromEnd = true
@@ -49,49 +52,62 @@ class TrainerMainFragment : Fragment() {
         recyclerView.adapter = trainerAdapter
 
         fab.setOnClickListener {
-            val dialogFragment = ChipReadDialogFragment()
-            fragmentManager?.let { dialogFragment.show(it, "dialog") }
+            startNewTrainingBtnPressed()
         }
 
         initTrainerEntryListener()
     }
 
+    fun startNewTrainingBtnPressed() {
+        val dialogFragment = NewTrainingDialogFragment()
+        fragmentManager?.let { dialogFragment.show(it, "new_training_dialog") }
+    }
+
+    private fun newTrainingCreated(myItem: TrainingsDbEntry) {
+        trainerAdapter = TrainerAdapter(activity!!.applicationContext) { item: TrainingsDbEntry -> trainerDbEntryClicked(item) }
+        recyclerView.layoutManager = LinearLayoutManager(activity).apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+        recyclerView.adapter = trainerAdapter
+
+        initTrainerEntryListener()
+
+        trainerDbEntryClicked(myItem)
+    }
+
     private fun addDbEntry() {
         DB.child(TRAINER_FIREBASE_ENTRY).push().key ?: return
 
-        val entry = TrainerDbEntry.create()
+        entry = TrainingsDbEntry.create()
 
-        entry.chipNum = this.chip
-        entry.petName = this.petName
-        entry.breed = this.breed
-        entry.ownerName = this.ownerName
-        entry.phoneNum = this.phone
+        entry.date = this.date
         entry.group = this.group
 
-        val newEntry = DB.child(TRAINER_FIREBASE_ENTRY).push()
-        newEntry.setValue(entry)
+        entry.pets = ArrayList()
+
+        val trainings: MutableMap<String, TrainingsDbEntry> = HashMap()
+        trainings[this.date] = entry
+
+        val ref = DB.child(TRAINER_FIREBASE_ENTRY)
+        ref.updateChildren(trainings as Map<String, Any>)
         Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+
+        newTrainingCreated(entry)
     }
 
-    fun setData(petName: String, breed: String, ownerName: String, phone: String, group: String) {
-        this.petName = petName
-        this.ownerName = ownerName
-        this.phone = phone
+    fun setData(date: String, group: String) {
+        this.date = date
         this.group = group
-
-        if (breed == "")
-            this.breed = "Unknown"
-        else
-            this.breed = breed
 
         addDbEntry()
     }
 
-    fun checkEntryAlreadyInDb(chipNum: String, callback: Callback) {
-        chip = chipNum
+    fun checkEntryAlreadyInDb(myDate: String, callback: Callback) {
+        date = myDate
 
-        val chipNumRef = DB.child(TRAINER_FIREBASE_ENTRY).child(chipNum)
-        chipNumRef.addListenerForSingleValueEvent(object: ValueEventListener {
+        val dateRef = DB.child(TRAINER_FIREBASE_ENTRY).child(myDate)
+        dateRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.d("Firebase", "Database error!")
             }
@@ -103,16 +119,11 @@ class TrainerMainFragment : Fragment() {
         })
     }
 
-    fun openTrainerDataForm() {
-        val dialogFragment = TrainerFormDialogFragment()
-        fragmentManager?.let { dialogFragment.show(it, "data_dialog_trainer") }
-    }
-
     private fun initTrainerEntryListener() {
         FirebaseDatabase.getInstance().getReference(TRAINER_FIREBASE_ENTRY)
             .addChildEventListener(object: ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                    val newEntry = dataSnapshot.getValue<TrainerDbEntry>(TrainerDbEntry::class.java)
+                    val newEntry = dataSnapshot.getValue<TrainingsDbEntry>(TrainingsDbEntry::class.java)
                     trainerAdapter.addEntry(newEntry)
                 }
 
@@ -126,7 +137,7 @@ class TrainerMainFragment : Fragment() {
             })
     }
 
-    private fun trainerDbEntryClicked(item: TrainerDbEntry) {
-        findNavController().navigate(TrainerMainFragmentDirections.actionTrainerMainFragmentToTrainerDetailsFragment(item.chipNum))
+    private fun trainerDbEntryClicked(item: TrainingsDbEntry) {
+        findNavController().navigate(TrainerMainFragmentDirections.actionTrainerMainFragmentToTrainerDetailsFragment(item.date, item.group))
     }
 }

@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import hu.bme.aut.dognet.R
-import hu.bme.aut.dognet.trainer.TrainerMainFragment
+import hu.bme.aut.dognet.trainer.TrainerDetailsFragment
 import kotlinx.android.synthetic.main.data_form_trainer_dialog_fragment.*
 
 class TrainerFormDialogFragment: DialogFragment() {
@@ -15,6 +15,7 @@ class TrainerFormDialogFragment: DialogFragment() {
 
     private var breed: String = ""
 
+    // TODO group to be chosen with radio button
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity!!.layoutInflater.inflate(R.layout.data_form_trainer_dialog_fragment, LinearLayout(activity), false)
 
@@ -30,11 +31,12 @@ class TrainerFormDialogFragment: DialogFragment() {
 
                 val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
-                (f as TrainerMainFragment).setData(builder.petNameEditText.text.toString(), breed,
+                (f as TrainerDetailsFragment).setData(builder.petNameEditText.text.toString(), breed,
                     builder.ownerNameEditText.text.toString(), builder.phoneNumEditText.text.toString(),
                     builder.groupEditText.text.toString())
             }
             else
+                // TODO nice error message instead
                 Toast.makeText(activity!!.applicationContext, "Compulsory areas are blank!", Toast.LENGTH_LONG).show()
 
         }

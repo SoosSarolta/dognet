@@ -8,20 +8,19 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.dognet.R
-import hu.bme.aut.dognet.trainer.model.TrainerDbEntry
-import kotlinx.android.synthetic.main.vet_db_etry_list_item.view.*
+import hu.bme.aut.dognet.trainer.model.TrainingsDbEntry
+import kotlinx.android.synthetic.main.trainer_db_entry_list_item.view.*
 
-class TrainerAdapter(private val context: Context, private val clickListener: (TrainerDbEntry) -> Unit): RecyclerView.Adapter<TrainerAdapter.ViewHolder>() {
+class TrainerAdapter(private val context: Context, private val clickListener: (TrainingsDbEntry) -> Unit): RecyclerView.Adapter<TrainerAdapter.ViewHolder>() {
 
-    private val petsList: MutableList<TrainerDbEntry> = mutableListOf()
+    private val trainingList: MutableList<TrainingsDbEntry> = mutableListOf()
     private var lastPosition = -1
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvChipNum: TextView = itemView.tvChipNum
-        val tvPetName: TextView = itemView.tvPetName
-        val tvOwnerName: TextView = itemView.tvOwnerName
+        val tvDate: TextView = itemView.tvDate
+        val tvGroup: TextView = itemView.tvGroup
 
-        fun bind(item: TrainerDbEntry, clickListener: (TrainerDbEntry) -> Unit) {
+        fun bind(item: TrainingsDbEntry, clickListener: (TrainingsDbEntry) -> Unit) {
             itemView.setOnClickListener {
                 clickListener(item)
             }
@@ -34,22 +33,21 @@ class TrainerAdapter(private val context: Context, private val clickListener: (T
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val tmpEntry = petsList[position]
-        holder.tvChipNum.text = tmpEntry.chipNum
-        holder.tvPetName.text = tmpEntry.petName
-        holder.tvOwnerName.text = tmpEntry.ownerName
+        val tmpEntry = trainingList[position]
+        holder.tvDate.text = tmpEntry.date
+        holder.tvGroup.text = tmpEntry.group
 
-        holder.bind(petsList[position], clickListener)
+        holder.bind(trainingList[position], clickListener)
 
         setAnimation(holder.itemView, position)
     }
 
-    override fun getItemCount() = petsList.size
+    override fun getItemCount() = trainingList.size
 
-    fun addEntry(trainerDbEntry: TrainerDbEntry?) {
-        trainerDbEntry ?: return
+    fun addEntry(trainingEntry: TrainingsDbEntry?) {
+        trainingEntry ?: return
 
-        petsList.add(trainerDbEntry)
+        trainingList.add(trainingEntry)
         notifyDataSetChanged()
     }
 

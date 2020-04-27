@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.google.firebase.database.FirebaseDatabase
 import hu.bme.aut.dognet.R
-import hu.bme.aut.dognet.util.DB
-import hu.bme.aut.dognet.util.VET_FIREBASE_ENTRY
 import hu.bme.aut.dognet.vet.VetDetailsFragment
 import kotlinx.android.synthetic.main.edit_vacc_dialog_fragment.*
 import java.util.*
