@@ -34,4 +34,13 @@
     <string name="new_training">New training</string>
     <string name="review_training">Review training</string>
     <string name="trainings">Trainings:</string>
+    <string name="add_image">Do you want to add an image?</string>
+    <string name="take_photo">Take photo</string>
+    <string name="choose_photo">Choose photo</string>
+    <string name="no_photo">No photo</string>
+    <string name="additional_info">Additional info:</string>
+    <string name="extra_info">Extra info:</string>
+    <string name="photo">Photo:</string>
+    <string name="last_seen">Last seen:</string>
+    <string name="last_seen_at">Last seen at:</string>
 </resources>

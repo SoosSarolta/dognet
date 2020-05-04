@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_chooserFragment_to_lostMainFragment"
             app:destination="@id/lostMainFragment" />
+        <action
+            android:id="@+id/action_chooserFragment_to_foundMainFragment"
+            app:destination="@id/foundMainFragment" />
     </fragment>
     <fragment
         android:id="@+id/vetMainFragment"
@@ -36,7 +39,11 @@
     <fragment
         android:id="@+id/lostMainFragment"
         android:name="hu.bme.aut.dognet.lost_n_found.LostMainFragment"
-        tools:layout="@layout/fragment_lost_main" />
+        tools:layout="@layout/fragment_lost_main" >
+        <action
+            android:id="@+id/action_lostMainFragment_to_lostDetailsFragment"
+            app:destination="@id/lostDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/vetDetailsFragment"
         android:name="hu.bme.aut.dognet.vet.VetDetailsFragment"
@@ -129,5 +136,50 @@
         <argument
             android:name="trainingDates"
             app:argType="string[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/foundMainFragment"
+        android:name="hu.bme.aut.dognet.lost_n_found.FoundMainFragment"
+        tools:layout="@layout/fragment_found_main" />
+    <fragment
+        android:id="@+id/lostDetailsFragment"
+        android:name="hu.bme.aut.dognet.lost_n_found.LostDetailsFragment"
+        tools:layout="@layout/fragment_lost_details" >
+        <argument
+            android:name="itemChipNum"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="petName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="breed"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="sex"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="ownerName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="phone"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="extraInfo"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="photo"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="lastSeen"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

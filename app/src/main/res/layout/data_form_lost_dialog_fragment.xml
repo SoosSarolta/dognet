@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dialog_fragment_padding"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/please_fill_in_the_form_below"
+        android:textSize="@dimen/dialog_fragment_title_size"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/chip"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
+
+        <EditText
+            android:id="@+id/chipNumEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:inputType="text"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:background="@color/colorAccent2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pet_name"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
+
+        <EditText
+            android:id="@+id/petNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:inputType="textCapWords"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:background="@color/colorAccent2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/breed"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
+
+        <EditText
+            android:id="@+id/breedEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:inputType="textCapWords"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:background="@color/colorAccent2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/sex"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
+
+        <EditText
+            android:id="@+id/sexEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:inputType="textCapWords"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:background="@color/colorAccent2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/owner_name"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
+
+        <EditText
+            android:id="@+id/ownerNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:inputType="textCapWords"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:background="@color/colorAccent2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:weightSum="4">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="@string/phone_number"
+        android:textSize="@dimen/dialog_fragment_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent2" />
+
+    <EditText
+        android:id="@+id/phoneNumEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:inputType="phone"
+        android:textSize="@dimen/dialog_fragment_text_size"
+        android:background="@color/colorAccent2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/last_seen_at"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
+
+        <EditText
+            android:id="@+id/lastSeenEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:inputType="textCapWords"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:background="@color/colorAccent2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/additional_info"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
+
+        <EditText
+            android:id="@+id/additionalInfoEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:inputType="textCapSentences"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:background="@color/colorAccent2" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submitFormBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dialog_fragment_margin"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/ok"
+        android:textColor="@color/colorAccent2" />
+
+</LinearLayout>
