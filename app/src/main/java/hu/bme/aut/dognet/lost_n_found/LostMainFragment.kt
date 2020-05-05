@@ -6,7 +6,10 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.media.Image
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
@@ -56,6 +59,8 @@ class LostMainFragment : Fragment() {
 
     private var photo: Bitmap? = null
 
+    private var imageFromGallery = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_lost_main, container, false)
     }
@@ -97,7 +102,11 @@ class LostMainFragment : Fragment() {
         val baos =  ByteArrayOutputStream()
         val imageEncoded: String
         if (this.photo != null) {
-            this.photo!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            if (imageFromGallery)
+                this.photo!!.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+            else
+                this.photo!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
+
             imageEncoded = android.util.Base64.encodeToString(baos.toByteArray(), android.util.Base64.DEFAULT)
             entry.photo = imageEncoded
         }
@@ -144,6 +153,8 @@ class LostMainFragment : Fragment() {
     }
 
     fun takePhotoBtnClicked() {
+        imageFromGallery = false
+
         if (!activity!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             Toast.makeText(this.activity!!, "This device does not have a camera!", Toast.LENGTH_LONG).show()
             return
@@ -159,6 +170,8 @@ class LostMainFragment : Fragment() {
     }
 
     fun choosePhotoBtnClicked() {
+        imageFromGallery = true
+
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_PICK
@@ -180,11 +193,20 @@ class LostMainFragment : Fragment() {
             addDbEntry()
         }
 
-        // TODO miért nem tudja encode-olni??????
         if (requestCode == REQUEST_CODE_STORAGE && resultCode == RESULT_OK) {
             val uri = data?.data
-            val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, uri)
-            this.photo = bitmap
+
+            uri?.let {
+                if (Build.VERSION.SDK_INT < 28) {
+                    val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, uri)
+                    this.photo = bitmap
+                }
+                else {
+                    val source = ImageDecoder.createSource(activity!!.contentResolver, uri)
+                    val bitmap = ImageDecoder.decodeBitmap(source)
+                    this.photo = bitmap
+                }
+            }
 
             addDbEntry()
         }
@@ -214,18 +236,19 @@ class LostMainFragment : Fragment() {
 
     private fun askForPermissions(permissionType: String, code: Int): Boolean {
         if (!isPermissionAllowed(permissionType)) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity as MainActivity, permissionType)) {
+            if (shouldShowRequestPermissionRationale(permissionType)) {
                 showPermissionDeniedDialog()
             } else {
-                ActivityCompat.requestPermissions(activity as MainActivity, arrayOf(permissionType), code)
+                requestPermissions(arrayOf(permissionType), code)
             }
             return false
         }
         return true
     }
 
-    // TODO nem történik semmi, amikor épp megadjuk az engedélyt?????
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         when (requestCode) {
             REQUEST_CODE_CAMERA -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

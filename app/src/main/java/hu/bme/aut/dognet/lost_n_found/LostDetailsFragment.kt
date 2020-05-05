@@ -17,8 +17,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import hu.bme.aut.dognet.R
 import kotlinx.android.synthetic.main.fragment_lost_details.*
 
-// TODO resize picture to fit
-// TODO place title on map (Last seen)
 class LostDetailsFragment : Fragment() {
 
     private val args: LostDetailsFragmentArgs by navArgs()
@@ -40,31 +38,36 @@ class LostDetailsFragment : Fragment() {
         tvDetailsPhone.text = args.phone.toString()
         tvDetailsExtraInfo.text = args.extraInfo.toString()
 
+        // TODO crop image to fit
+        // TODO placeholder when there's no photo
         val imageBytes = android.util.Base64.decode(args.photo.toString(), android.util.Base64.DEFAULT)
         val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
         photoOfPetImageView.setImageBitmap(decodedImage)
 
-        map.onCreate(savedInstanceState)
-        map.onResume()
+        // TODO place title on map (Last seen)
+        if (args.lastSeen.toString() != "null") {
+            map.onCreate(savedInstanceState)
+            map.onResume()
 
-        MapsInitializer.initialize(activity!!.applicationContext)
+            MapsInitializer.initialize(activity!!.applicationContext)
 
-        map.getMapAsync {
-            googleMap = it
+            map.getMapAsync {
+                googleMap = it
 
-            val geocoder = Geocoder(activity)
-            val address = geocoder.getFromLocationName(args.lastSeen.toString(), 3)
+                val geocoder = Geocoder(activity)
+                val address = geocoder.getFromLocationName(args.lastSeen.toString(), 3)
 
-            if (address != null) {
-                val loc = address[0]
-                val latitude = loc.latitude
-                val longitude = loc.longitude
+                if (address != null) {
+                    val loc = address[0]
+                    val latitude = loc.latitude
+                    val longitude = loc.longitude
 
-                val markerPoint = LatLng(latitude, longitude)
-                googleMap.addMarker(MarkerOptions().position(markerPoint).title("Last Seen"))
+                    val markerPoint = LatLng(latitude, longitude)
+                    googleMap.addMarker(MarkerOptions().position(markerPoint).title("Last Seen"))
 
-                val cameraPosition = CameraPosition.Builder().target(markerPoint).zoom(10F).build()
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                    val cameraPosition = CameraPosition.Builder().target(markerPoint).zoom(10F).build()
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                }
             }
         }
     }

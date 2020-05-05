@@ -1,5 +1,6 @@
 package hu.bme.aut.dognet.lost_n_found
 
+import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,8 +17,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import hu.bme.aut.dognet.R
 import kotlinx.android.synthetic.main.fragment_found_details.*
 
-// TODO resize picture to fit
-// TODO place title on map (Found at)
 class FoundDetailsFragment : Fragment() {
 
     private val args: FoundDetailsFragmentArgs by navArgs()
@@ -36,32 +35,37 @@ class FoundDetailsFragment : Fragment() {
         tvDetailsSex.text = args.sex.toString()
         tvDetailsExtraInfo.text = args.extraInfo.toString()
 
-        // TODO ha már van fotó
-        //val imageBytes = android.util.Base64.decode(args.photo.toString(), android.util.Base64.DEFAULT)
-        //val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-        //photoOfPetImageView.setImageBitmap(decodedImage)
+        // TODO crop image to fit
+        // TODO placeholder when there's no photo
+        val imageBytes = android.util.Base64.decode(args.photo.toString(), android.util.Base64.DEFAULT)
+        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        photoOfPetImageView.setImageBitmap(decodedImage)
 
-        map.onCreate(savedInstanceState)
-        map.onResume()
+        // TODO place title on map (Found at)
+        if (args.foundAt.toString() != "null") {
+            map.onCreate(savedInstanceState)
+            map.onResume()
 
-        MapsInitializer.initialize(activity!!.applicationContext)
+            MapsInitializer.initialize(activity!!.applicationContext)
 
-        map.getMapAsync {
-            googleMap = it
+            map.getMapAsync {
+                googleMap = it
 
-            val geocoder = Geocoder(activity)
-            val address = geocoder.getFromLocationName(args.foundAt.toString(), 3)
+                val geocoder = Geocoder(activity)
+                val address = geocoder.getFromLocationName(args.foundAt.toString(), 3)
 
-            if (address != null) {
-                val loc = address[0]
-                val latitude = loc.latitude
-                val longitude = loc.longitude
+                if (address != null) {
+                    val loc = address[0]
+                    val latitude = loc.latitude
+                    val longitude = loc.longitude
 
-                val markerPoint = LatLng(latitude, longitude)
-                googleMap.addMarker(MarkerOptions().position(markerPoint).title("Found At"))
+                    val markerPoint = LatLng(latitude, longitude)
+                    googleMap.addMarker(MarkerOptions().position(markerPoint).title("Found At"))
 
-                val cameraPosition = CameraPosition.Builder().target(markerPoint).zoom(10F).build()
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                    val cameraPosition =
+                        CameraPosition.Builder().target(markerPoint).zoom(10F).build()
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                }
             }
         }
     }
