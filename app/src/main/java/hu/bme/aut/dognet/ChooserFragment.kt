@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_chooser.*
 
-
 class ChooserFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,9 +33,9 @@ class ChooserFragment : Fragment() {
             view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToLostMainFragment())
         }
 
-/*        foundDogButton.setOnClickListener {
-            view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToLostMainFragment())
+        foundDogButton.setOnClickListener {
+            view.findNavController().navigate(ChooserFragmentDirections.actionChooserFragmentToFoundMainFragment())
 
-        }*/
+        }
     }
 }

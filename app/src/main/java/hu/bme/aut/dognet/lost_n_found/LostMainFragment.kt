@@ -25,7 +25,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
-import hu.bme.aut.dognet.dialog_fragment.lost_n_found.AddLostImageDialogFragment
+import hu.bme.aut.dognet.dialog_fragment.lost_n_found.AddImageDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.lost_n_found.LostPetDataFormDialogFragment
 import hu.bme.aut.dognet.lost_n_found.adapter.LostAdapter
 import hu.bme.aut.dognet.lost_n_found.model.LostDbEntry
@@ -36,6 +36,7 @@ import hu.bme.aut.dognet.util.REQUEST_CODE_STORAGE
 import kotlinx.android.synthetic.main.fragment_lost_main.*
 import java.io.ByteArrayOutputStream
 
+// TODO link lost & found pages - if chip numbers are alike, notify user and show the appropriate item
 // TODO replace deprecated fragment manager calls
 // TODO migrate to firestore
 class LostMainFragment : Fragment() {
@@ -104,6 +105,7 @@ class LostMainFragment : Fragment() {
             entry.photo = null
 
         val pets: MutableMap<String, LostDbEntry> = HashMap()
+        // TODO identification value when there's no chip?
         pets[this.chip] = entry
 
         val ref = DB.child(LOST_FIREBASE_ENTRY)
@@ -129,7 +131,7 @@ class LostMainFragment : Fragment() {
             this.lastSeen = lastSeen
 
         if (extra == "")
-            this.extraInfo = ""
+            this.extraInfo = "-"
         else
             this.extraInfo = extra
 
@@ -137,7 +139,7 @@ class LostMainFragment : Fragment() {
     }
 
     private fun openAddImageDialogFragment() {
-        val dialogFragment = AddLostImageDialogFragment()
+        val dialogFragment = AddImageDialogFragment()
         fragmentManager?.let { dialogFragment.show(it, "photo_dialog") }
     }
 
@@ -178,7 +180,7 @@ class LostMainFragment : Fragment() {
             addDbEntry()
         }
 
-        // TODO
+        // TODO miért nem tudja encode-olni??????
         if (requestCode == REQUEST_CODE_STORAGE && resultCode == RESULT_OK) {
             val uri = data?.data
             val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, uri)
@@ -222,7 +224,7 @@ class LostMainFragment : Fragment() {
         return true
     }
 
-    // TODO
+    // TODO nem történik semmi, amikor épp megadjuk az engedélyt?????
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             REQUEST_CODE_CAMERA -> {

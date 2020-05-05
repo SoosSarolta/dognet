@@ -140,7 +140,11 @@
     <fragment
         android:id="@+id/foundMainFragment"
         android:name="hu.bme.aut.dognet.lost_n_found.FoundMainFragment"
-        tools:layout="@layout/fragment_found_main" />
+        tools:layout="@layout/fragment_found_main" >
+        <action
+            android:id="@+id/action_foundMainFragment_to_foundDetailsFragment"
+            app:destination="@id/foundDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/lostDetailsFragment"
         android:name="hu.bme.aut.dognet.lost_n_found.LostDetailsFragment"
@@ -179,6 +183,35 @@
             app:nullable="true" />
         <argument
             android:name="lastSeen"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/foundDetailsFragment"
+        android:name="hu.bme.aut.dognet.lost_n_found.FoundDetailsFragment"
+        tools:layout="@layout/fragment_found_details" >
+        <argument
+            android:name="itemChipNum"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="breed"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="sex"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="foundAt"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="extraInfo"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="photo"
             app:argType="string"
             app:nullable="true" />
     </fragment>

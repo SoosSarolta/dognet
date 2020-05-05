@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import hu.bme.aut.dognet.R
+import hu.bme.aut.dognet.lost_n_found.FoundMainFragment
 import hu.bme.aut.dognet.lost_n_found.LostMainFragment
 import kotlinx.android.synthetic.main.add_lost_image_dialog_fragment.*
 
-class AddLostImageDialogFragment : DialogFragment () {
+class AddImageDialogFragment : DialogFragment () {
 
     private lateinit var builder: Dialog
 
@@ -25,6 +26,10 @@ class AddLostImageDialogFragment : DialogFragment () {
                 dismiss()
                 f.takePhotoBtnClicked()
             }
+            else if (f is FoundMainFragment) {
+                dismiss()
+                f.makePhotoBtnClicked()
+            }
         }
 
         builder.btnChoosePhoto.setOnClickListener {
@@ -32,12 +37,20 @@ class AddLostImageDialogFragment : DialogFragment () {
                 dismiss()
                 f.choosePhotoBtnClicked()
             }
+            else if (f is FoundMainFragment) {
+                dismiss()
+                f.pickPhotoBtnClicked()
+            }
         }
 
         builder.btnCancel.setOnClickListener {
             if (f is LostMainFragment) {
                 dismiss()
                 f.noPhotoBtnClicked()
+            }
+            else if (f is FoundMainFragment) {
+                dismiss()
+                f.withoutPhotoBtnClicked()
             }
         }
 

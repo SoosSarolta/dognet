@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
+import hu.bme.aut.dognet.lost_n_found.FoundMainFragment
 import hu.bme.aut.dognet.trainer.TrainerDetailsFragment
 import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.vet.VetMainFragment
@@ -38,9 +39,11 @@ class ChipReadDialogFragment : DialogFragment() {
             (parentFragment!!.activity as MainActivity).enableForegroundMode()
         }
 
+        // TODO if parent is FoundMainFragment - stop searching for chip after 10 sec and call noChipFound
         builder.btnCancel.setOnClickListener {
-            if (!chipRead)
+            if (!chipRead) {
                 builder.onBackPressed()
+            }
             else {
                 val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
                 if (f is VetMainFragment) {
@@ -51,12 +54,18 @@ class ChipReadDialogFragment : DialogFragment() {
                             }
                         })
                 }
+
                 else if (f is TrainerDetailsFragment) {
                     dismiss()
                     if(!f.checkEntryAlreadyInList(chipNum))
                         f.openTrainerDataForm()
                     else
                         Toast.makeText(activity, "Pet already added!", Toast.LENGTH_LONG).show()
+                }
+
+                else if (f is FoundMainFragment) {
+                    dismiss()
+                    f.chipRead(chipNum)
                 }
 
                 chipRead = false

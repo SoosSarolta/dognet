@@ -9,7 +9,6 @@ import androidx.navigation.fragment.navArgs
 import hu.bme.aut.dognet.R
 import kotlinx.android.synthetic.main.fragment_trainer_details_details.*
 
-
 class TrainerDetailsDetailsFragment : Fragment() {
 
     private val args: TrainerDetailsDetailsFragmentArgs by navArgs()
