@@ -3,11 +3,25 @@
     <dimen name="nav_drawer_header_height">200dp</dimen>
     <dimen name="nav_drawer_header_padding">16dp</dimen>
     <dimen name="button_text_size">40sp</dimen>
-    <dimen name="button_text_padding">5dp</dimen>
-    <dimen name="button_margintop_padding">5dp</dimen>
-    <dimen name="button_marginstartend_padding">3dp</dimen>
-    <dimen name="dialog_fragment_padding">15dp</dimen>
+
+    <dimen name="one_dp">1dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
+    <dimen name="three_dp">3dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="fifteen_dp">15dp</dimen>
+    <dimen name="twenty_five_dp">25dp</dimen>
+
     <dimen name="dialog_fragment_title_size">18sp</dimen>
     <dimen name="dialog_fragment_text_size">15sp</dimen>
-    <dimen name="dialog_fragment_margin">10dp</dimen>
+
+    <dimen name="data_form_found_popup_width">400dp</dimen>
+    <dimen name="data_form_found_popup_height">300dp</dimen>
+    <dimen name="data_form_lost_popup_height">440dp</dimen>
+
+    <dimen name="new_or_review_training_width">350dp</dimen>
+    <dimen name="new_or_review_training_height">200dp</dimen>
+
+    <dimen name="trainer_form_popup_height">330dp</dimen>
+
+    <dimen name="vet_form_popup_height">400dp</dimen>
 </resources>

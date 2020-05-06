@@ -64,6 +64,10 @@ class TrainerDetailsFragment : Fragment() {
         initDogsInTrainingEntryListener()
     }
 
+    fun getGroup(): String {
+        return args.trainingGroup.toString()
+    }
+
     fun checkEntryAlreadyInList(chipNum: String): Boolean {
         this.chip = chipNum
         return petsList.contains(chipNum)

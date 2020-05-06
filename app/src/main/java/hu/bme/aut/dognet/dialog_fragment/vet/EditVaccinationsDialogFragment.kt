@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.vet.VetDetailsFragment
@@ -16,11 +15,15 @@ class EditVaccinationsDialogFragment : DialogFragment() {
 
     private lateinit var builder: Dialog
 
+    private var flag = false
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity!!.layoutInflater.inflate(R.layout.edit_vacc_dialog_fragment, LinearLayout(activity), false)
 
         builder = Dialog(activity!!)
         builder.setContentView(view)
+
+        isCancelable = false
 
         builder.etVaccDate.setOnClickListener {
             val currentDate: Calendar = Calendar.getInstance()
@@ -38,7 +41,9 @@ class EditVaccinationsDialogFragment : DialogFragment() {
         }
 
         builder.btnSubmitVacc.setOnClickListener {
-            if (validate()) {
+            validate()
+
+            if (flag) {
                 val vaccMap: MutableMap<String, String> = HashMap()
                 vaccMap[builder.etVaccName.text.toString()] = builder.etVaccDate.text.toString()
 
@@ -50,18 +55,27 @@ class EditVaccinationsDialogFragment : DialogFragment() {
                 if (f is VetDetailsFragment)
                     f.setVaccination(vaccMap)
             }
-            else {
-                // TODO nice error message instead
-                Toast.makeText(activity, "Please fill in both boxes!", Toast.LENGTH_LONG).show()
-            }
         }
 
         builder.btnCancelVacc.setOnClickListener {
-            builder.onBackPressed()
+            dismiss()
         }
 
         return builder
     }
 
-    private fun validate() = builder.etVaccName.text.isNotEmpty() && builder.etVaccDate.text.isNotEmpty()
+    private fun validate() {
+        if (builder.etVaccName.text.isEmpty()) {
+            flag = false
+            builder.etVaccName.error = "This is a compulsory area!"
+        }
+
+        if (builder.etVaccDate.text.isEmpty()) {
+            flag = false
+            builder.etVaccDate.error = "This is a compulsory area!"
+        }
+
+        if (builder.etVaccName.text.isNotEmpty() && builder.etVaccDate.text.isNotEmpty())
+            flag = true
+    }
 }

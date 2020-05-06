@@ -19,6 +19,8 @@ class AddImageDialogFragment : DialogFragment () {
         builder = Dialog(activity!!)
         builder.setContentView(view)
 
+        //isCancelable = false
+
         val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
         builder.btnTakePhoto.setOnClickListener {

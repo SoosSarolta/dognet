@@ -18,6 +18,8 @@ class EditMedRecordDialogFragment : DialogFragment() {
         builder = Dialog(activity!!)
         builder.setContentView(view)
 
+        isCancelable = false
+
         builder.btnSubmitMedRec.setOnClickListener {
             if (validate()) {
                 val medRecList: MutableList<String> = ArrayList()
@@ -31,12 +33,12 @@ class EditMedRecordDialogFragment : DialogFragment() {
                     f.setMedRecord(medRecList)
             }
             else {
-                builder.onBackPressed()
+                dismiss()
             }
         }
 
         builder.btnCancelMedRec.setOnClickListener {
-            builder.onBackPressed()
+            dismiss()
         }
 
         return builder

@@ -18,6 +18,8 @@ class NewOrReviewTrainingDialogFragment : DialogFragment() {
         builder = Dialog(activity!!)
         builder.setContentView(view)
 
+        //isCancelable = false
+
         val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
         builder.btnStartNew.setOnClickListener {
@@ -35,5 +37,13 @@ class NewOrReviewTrainingDialogFragment : DialogFragment() {
         }
 
         return builder
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val width = resources.getDimensionPixelSize(R.dimen.new_or_review_training_width)
+        val height = resources.getDimensionPixelSize(R.dimen.new_or_review_training_height)
+        dialog!!.window!!.setLayout(width, height)
     }
 }

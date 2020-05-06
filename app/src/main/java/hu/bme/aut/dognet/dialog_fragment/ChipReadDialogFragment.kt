@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.chipread_dialog_fragment.*
 import org.ndeftools.Message
 import org.ndeftools.wellknown.TextRecord
 
-// TODO notify user with toast if pet is already in DB (vet)
 class ChipReadDialogFragment : DialogFragment() {
 
     private lateinit var builder: Dialog
@@ -35,6 +34,8 @@ class ChipReadDialogFragment : DialogFragment() {
         builder = Dialog(activity!!)
         builder.setContentView(view)
 
+        isCancelable = false
+
         builder.btnStart.setOnClickListener {
             (parentFragment!!.activity as MainActivity).enableForegroundMode()
         }
@@ -42,7 +43,7 @@ class ChipReadDialogFragment : DialogFragment() {
         // TODO if parent is FoundMainFragment - stop searching for chip after 10 sec and call noChipFound
         builder.btnCancel.setOnClickListener {
             if (!chipRead) {
-                builder.onBackPressed()
+                dismiss()
             }
             else {
                 val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]

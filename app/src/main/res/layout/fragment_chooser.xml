@@ -13,14 +13,14 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        android:layout_marginTop="@dimen/button_margintop_padding"
-        android:layout_marginStart="@dimen/button_marginstartend_padding"
-        android:layout_marginEnd="@dimen/button_marginstartend_padding"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_marginStart="@dimen/three_dp"
+        android:layout_marginEnd="@dimen/three_dp"
         android:background="@drawable/dognet_vet"
         android:text="@string/for_vets"
         android:textSize="@dimen/button_text_size"
         android:gravity="end|bottom"
-        android:paddingEnd="@dimen/button_text_padding" />
+        android:paddingEnd="@dimen/five_dp" />
 
     <Button
         android:id="@+id/trainerButton"
@@ -28,14 +28,14 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        android:layout_marginTop="@dimen/button_margintop_padding"
-        android:layout_marginStart="@dimen/button_marginstartend_padding"
-        android:layout_marginEnd="@dimen/button_marginstartend_padding"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_marginStart="@dimen/three_dp"
+        android:layout_marginEnd="@dimen/three_dp"
         android:background="@drawable/dognet_trainer"
         android:text="@string/for_trainers"
         android:textSize="@dimen/button_text_size"
         android:gravity="end|bottom"
-        android:paddingEnd="@dimen/button_text_padding"/>
+        android:paddingEnd="@dimen/five_dp"/>
 
     <Button
         android:id="@+id/lostDogButton"
@@ -43,14 +43,14 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        android:layout_marginTop="@dimen/button_margintop_padding"
-        android:layout_marginStart="@dimen/button_marginstartend_padding"
-        android:layout_marginEnd="@dimen/button_marginstartend_padding"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_marginStart="@dimen/three_dp"
+        android:layout_marginEnd="@dimen/three_dp"
         android:background="@drawable/dognet_lost"
         android:text="@string/lost_dog"
         android:textSize="@dimen/button_text_size"
         android:gravity="end|bottom"
-        android:paddingEnd="@dimen/button_text_padding" />
+        android:paddingEnd="@dimen/five_dp" />
 
     <Button
         android:id="@+id/foundDogButton"
@@ -58,13 +58,13 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scaleType="fitXY"
-        android:layout_marginTop="@dimen/button_margintop_padding"
-        android:layout_marginStart="@dimen/button_marginstartend_padding"
-        android:layout_marginEnd="@dimen/button_marginstartend_padding"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_marginStart="@dimen/three_dp"
+        android:layout_marginEnd="@dimen/three_dp"
         android:background="@drawable/dognet_founddog"
         android:text="@string/found_dog"
         android:textSize="@dimen/button_text_size"
         android:gravity="end|bottom"
-        android:paddingEnd="@dimen/button_text_padding" />
+        android:paddingEnd="@dimen/five_dp" />
 
 </LinearLayout>

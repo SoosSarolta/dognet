@@ -200,7 +200,7 @@
                android:layout_height="wrap_content"
                android:layout_alignParentEnd="true"
                android:layout_centerVertical="true"
-               android:layout_margin="@dimen/button_text_padding"
+               android:layout_margin="@dimen/five_dp"
                android:src="@drawable/edit_data" />
 
        </RelativeLayout>
@@ -240,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="@dimen/button_text_padding"
+                android:layout_margin="@dimen/five_dp"
                 android:src="@drawable/edit_data" />
 
         </RelativeLayout>

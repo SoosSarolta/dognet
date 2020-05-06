@@ -17,10 +17,10 @@
     <string name="start">Start</string>
     <string name="cancel">Cancel</string>
     <string name="pet_name">Pet name: </string>
-    <string name="owner_name">Owner name: </string>
+    <string name="owner_name">Owner: </string>
     <string name="please_fill_in_the_form_below">Please fill in the form below!</string>
     <string name="breed">Breed: </string>
-    <string name="date_of_birth">Date of birth: </string>
+    <string name="date_of_birth">Birthday: </string>
     <string name="address">Address: </string>
     <string name="phone_number">Phone: </string>
     <string name="sex">Sex: </string>
@@ -38,7 +38,7 @@
     <string name="take_photo">Take photo</string>
     <string name="choose_photo">Choose photo</string>
     <string name="no_photo">No photo</string>
-    <string name="additional_info">Additional info: </string>
+    <string name="additional_info">Extra info: </string>
     <string name="extra_info">Extra info: </string>
     <string name="photo">Photo: </string>
     <string name="last_seen">Last seen: </string>

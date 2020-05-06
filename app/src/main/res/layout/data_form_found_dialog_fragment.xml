@@ -4,14 +4,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/dialog_fragment_padding"
+    android:padding="@dimen/fifteen_dp"
     android:background="@color/colorPrimary">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dialog_fragment_margin"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/fifteen_dp"
+        android:gravity="center_horizontal"
         android:text="@string/please_fill_in_the_form_below"
         android:textSize="@dimen/dialog_fragment_title_size"
         android:textStyle="bold"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:weightSum="4">
 
         <TextView
@@ -36,8 +36,10 @@
         <EditText
             android:id="@+id/breedEditText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
             android:inputType="textCapWords"
             android:textSize="@dimen/dialog_fragment_text_size"
             android:background="@color/colorAccent2" />
@@ -48,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:weightSum="4">
 
         <TextView
@@ -60,14 +62,13 @@
             android:textStyle="bold"
             android:textColor="@color/colorAccent2" />
 
-        <EditText
-            android:id="@+id/sexEditText"
+        <Spinner
+            android:id="@+id/sexSpinner"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="3"
-            android:inputType="textCapWords"
-            android:textSize="@dimen/dialog_fragment_text_size"
-            android:background="@color/colorAccent2" />
+            android:background="@color/colorAccent2"
+            android:spinnerMode="dropdown" />
 
     </LinearLayout>
 
@@ -75,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:weightSum="4">
 
         <TextView
@@ -90,8 +91,10 @@
         <EditText
             android:id="@+id/foundAtEditText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
             android:inputType="textCapWords"
             android:textSize="@dimen/dialog_fragment_text_size"
             android:background="@color/colorAccent2" />
@@ -102,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/dialog_fragment_margin"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:weightSum="4">
 
         <TextView
@@ -117,8 +120,10 @@
         <EditText
             android:id="@+id/additionalInfoEditText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
             android:inputType="textCapSentences"
             android:textSize="@dimen/dialog_fragment_text_size"
             android:background="@color/colorAccent2" />
@@ -130,7 +135,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dialog_fragment_margin"
+        android:layout_marginTop="@dimen/ten_dp"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/ok"
         android:textColor="@color/colorAccent2" />

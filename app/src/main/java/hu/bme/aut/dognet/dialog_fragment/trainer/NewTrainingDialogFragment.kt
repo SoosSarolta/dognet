@@ -3,8 +3,8 @@ package hu.bme.aut.dognet.dialog_fragment.trainer
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.trainer.TrainerMainFragment
@@ -12,16 +12,23 @@ import hu.bme.aut.dognet.util.Callback
 import kotlinx.android.synthetic.main.new_training_dialog_fragment.*
 import java.util.*
 
-// TODO choose group with radio button
 class NewTrainingDialogFragment : DialogFragment() {
 
     private lateinit var builder: Dialog
+
+    private var flag = false
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity!!.layoutInflater.inflate(R.layout.new_training_dialog_fragment, LinearLayout(activity), false)
 
         builder = Dialog(activity!!)
         builder.setContentView(view)
+
+        isCancelable = false
+
+        val items = arrayOf("Beginner", "Intermediate", "Advanced", "Forest walk")
+        val adapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, items)
+        builder.groupSpinner.adapter = adapter
 
         builder.etTrainingDate.setOnClickListener {
             val currentDate: Calendar = Calendar.getInstance()
@@ -39,11 +46,12 @@ class NewTrainingDialogFragment : DialogFragment() {
         builder.btnOkTraining.setOnClickListener {
             val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
-            // TODO notify user with toast if training is alredy in DB
             if (f is TrainerMainFragment) {
-                if (validate()) {
+                validate()
+
+                if (flag) {
                     val trainingDate = builder.etTrainingDate.text.toString()
-                    val trainingGroup = builder.etGroup.text.toString()
+                    val trainingGroup = builder.groupSpinner.selectedItem.toString()
 
                     dismiss()
 
@@ -53,18 +61,22 @@ class NewTrainingDialogFragment : DialogFragment() {
                         }
                     })
                 }
-                else
-                    // TODO nice error message instead
-                    Toast.makeText(activity!!.applicationContext, "Compulsory areas are blank!", Toast.LENGTH_LONG).show()
             }
         }
 
         builder.btnCancelTraining.setOnClickListener {
-            builder.onBackPressed()
+            dismiss()
         }
 
         return builder
     }
 
-    private fun validate() = builder.etTrainingDate.text.isNotEmpty() && builder.etGroup.text.isNotEmpty()
+    private fun validate() {
+        if (builder.etTrainingDate.text.isEmpty()) {
+            flag = false
+            builder.etTrainingDate.error = "This is a compulsory area!"
+        }
+        else
+            flag = true
+    }
 }

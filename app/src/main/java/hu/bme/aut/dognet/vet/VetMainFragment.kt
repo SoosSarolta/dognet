@@ -168,6 +168,8 @@ class VetMainFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists())
                     callback.onCallback()
+                else
+                    Toast.makeText(activity, "Pet already added!", Toast.LENGTH_LONG).show()
             }
         })
     }
