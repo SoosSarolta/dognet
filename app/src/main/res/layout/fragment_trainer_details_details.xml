@@ -5,147 +5,224 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimaryDarkTransparent"
     tools:context=".trainer.TrainerDetailsDetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/chip" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/chip"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsDetailsChip"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/pet_name" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/pet_name"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsDetailsPetName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/breed" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/breed"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsDetailsBreed"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/owner_name" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/owner_name"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsDetailsOwnerName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/phone_number" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/phone_number"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsDetailsPhone"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/three_dp"
         android:background="@android:color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/group" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/group"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsDetailsGroup"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/three_dp"
         android:background="@android:color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/trainings" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/trainings"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <EditText
             android:id="@+id/etDetailsDetailsTrainings"

@@ -43,7 +43,6 @@ class TrainerMainFragment : Fragment() {
 
         val decisionDialogFragment = NewOrReviewTrainingDialogFragment()
         fragmentManager?.let { decisionDialogFragment.show(it, "new_or_review_dialog") }
-
     }
 
     fun reviewTrainingBtnPressed() {

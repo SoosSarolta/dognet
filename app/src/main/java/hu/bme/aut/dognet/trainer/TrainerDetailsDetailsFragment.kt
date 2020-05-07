@@ -22,7 +22,12 @@ class TrainerDetailsDetailsFragment : Fragment() {
 
         tvDetailsDetailsChip.text = args.chip.toString()
         tvDetailsDetailsPetName.text = args.petName.toString()
-        tvDetailsDetailsBreed.text = args.breed.toString()
+
+        if (args.breed.toString() != "null")
+            tvDetailsDetailsBreed.text = args.breed.toString()
+        else
+            tvDetailsDetailsBreed.text = getString(R.string.unkown)
+
         tvDetailsDetailsOwnerName.text = args.ownerName.toString()
         tvDetailsDetailsPhone.text = args.phone.toString()
 

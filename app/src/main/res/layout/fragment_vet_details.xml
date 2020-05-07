@@ -5,246 +5,348 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimaryDarkTransparent"
     tools:context=".vet.VetDetailsFragment">
 
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
+       android:layout_marginTop="@dimen/ten_dp"
        android:weightSum="4"
        android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/chip" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/chip"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsChip"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/pet_name" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/pet_name"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsPetName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/breed" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/breed"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsBreed"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/sex" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/sex"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsSex"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/date_of_birth" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/date_of_birth"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsDob"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/owner_name" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/owner_name"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsOwnerName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/address" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/address"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsAddress"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
             android:layout_weight="1"
-            android:text="@string/phone_number" />
+            android:text="@string/phone_number"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsPhone"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/three_dp"
         android:background="@android:color/black" />
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical">
-
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:text="@string/vaccinations" />
-
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-
-           <EditText
-               android:id="@+id/etDetailsVaccinations"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:inputType="textMultiLine"
-               android:enabled="false"
-               android:scrollbars="vertical" />
-
-           <ImageButton
-               android:id="@+id/btnEditVaccinations"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_alignParentEnd="true"
-               android:layout_centerVertical="true"
-               android:layout_margin="@dimen/five_dp"
-               android:src="@drawable/edit_data" />
-
-       </RelativeLayout>
-
-   </LinearLayout>
-
-    <View
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black" />
+        android:layout_height="240dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/medical_record" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/etDetailsMedRecord"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:enabled="false"
-                android:scrollbars="vertical" />
+                android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/btnEditMedRecord"
+            <TextView
+                android:id="@+id/vaccTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="@dimen/five_dp"
-                android:src="@drawable/edit_data" />
+                android:layout_height="@dimen/twenty_five_dp"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:layout_marginStart="@dimen/ten_dp"
+                android:paddingStart="@dimen/five_dp"
+                android:paddingEnd="@dimen/one_dp"
+                android:layout_alignParentStart="true"
+                android:textSize="@dimen/dialog_fragment_text_size"
+                android:textStyle="bold"
+                android:text="@string/vaccinations"
+                android:textColor="@android:color/black"/>
 
-        </RelativeLayout>
+                <ListView
+                    android:id="@+id/vaccListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/vaccTextView" />
 
-    </LinearLayout>
+                <ImageButton
+                    android:id="@+id/btnEditVaccinations"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/five_dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/edit_data" />
+
+            </RelativeLayout>
+
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/three_dp"
+        android:background="@android:color/black" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="240dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/medRecTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/twenty_five_dp"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:layout_marginStart="@dimen/ten_dp"
+                    android:paddingStart="@dimen/five_dp"
+                    android:paddingEnd="@dimen/one_dp"
+                    android:layout_alignParentStart="true"
+                    android:textSize="@dimen/dialog_fragment_text_size"
+                    android:textStyle="bold"
+                    android:text="@string/medical_record"
+                    android:textColor="@android:color/black"/>
+
+                <ListView
+                    android:id="@+id/medRecListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/medRecTextView" />
+
+                <ImageButton
+                    android:id="@+id/btnEditMedRecord"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/five_dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/edit_data" />
+
+            </RelativeLayout>
+
+    </ScrollView>
 
 </LinearLayout>
