@@ -54,6 +54,7 @@ class FoundMainFragment : Fragment() {
     private var photo: Bitmap? = null
 
     private var imageFromGallery = false
+    private var noChip = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_found_main, container, false)
@@ -105,12 +106,16 @@ class FoundMainFragment : Fragment() {
             entry.photo = null
 
         val pets: MutableMap<String, FoundDbEntry> = HashMap()
-        // TODO identification value when there's no chip?
-        pets[this.chip] = entry
+        if (!noChip) {
+            pets[this.chip] = entry
 
-        val ref = DB.child(FOUND_FIREBASE_ENTRY)
-        ref.updateChildren(pets as Map<String, Any>)
-        Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+            val ref = DB.child(FOUND_FIREBASE_ENTRY)
+            ref.updateChildren(pets as Map<String, Any>)
+            Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+        }
+        else {
+            // TODO - no chip in pet
+        }
     }
 
     fun setData(breed: String, sex: String, foundAt: String, extra: String) {
@@ -144,7 +149,7 @@ class FoundMainFragment : Fragment() {
 
     // TODO - no chip in pet
     fun noChipFound() {
-
+        noChip = true
     }
 
     private fun openFoundDataForm() {

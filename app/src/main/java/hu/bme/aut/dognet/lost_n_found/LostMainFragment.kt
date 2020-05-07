@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -17,7 +16,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -114,12 +112,17 @@ class LostMainFragment : Fragment() {
             entry.photo = null
 
         val pets: MutableMap<String, LostDbEntry> = HashMap()
-        // TODO identification value when there's no chip?
-        pets[this.chip] = entry
 
-        val ref = DB.child(LOST_FIREBASE_ENTRY)
-        ref.updateChildren(pets as Map<String, Any>)
-        Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+        if (this.chip == "-") {
+            // TODO - no chip in pet
+        }
+        else {
+            pets[this.chip] = entry
+
+            val ref = DB.child(LOST_FIREBASE_ENTRY)
+            ref.updateChildren(pets as Map<String, Any>)
+            Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+        }
     }
 
     fun setData(chip: String, petName: String, breed: String, sex: String, ownerName: String, phone: String, lastSeen: String, extra: String) {

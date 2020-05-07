@@ -5,129 +5,191 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimaryDarkTransparent"
     tools:context=".lost_n_found.FoundDetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/chip" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/chip"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsChip"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/breed" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/breed"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsBreed"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/sex" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/sex"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsSex"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_marginBottom="@dimen/ten_dp"
         android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_weight="1"
-            android:text="@string/extra_info" />
+            android:layout_marginStart="@dimen/ten_dp"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:text="@string/extra_info"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent2" />
 
         <TextView
             android:id="@+id/tvDetailsExtraInfo"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3" />
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/one_dp"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@color/colorAccent2" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/three_dp"
         android:background="@android:color/black" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/photo" />
-
         <ImageView
             android:id="@+id/photoOfPetImageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="350dp"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/photo_of_pet" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_alignParentStart="true"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/five_dp"
+            android:paddingTop="@dimen/one_dp"
+            android:background="@color/colorAccent2"
+            android:text="@string/photo"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/three_dp"
         android:background="@android:color/black" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/found_at" />
-
         <com.google.android.gms.maps.MapView
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="280dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/twenty_five_dp"
+            android:layout_alignParentStart="true"
+            android:paddingStart="@dimen/five_dp"
+            android:paddingEnd="@dimen/five_dp"
+            android:paddingTop="@dimen/one_dp"
+            android:background="@color/colorAccent2"
+            android:text="@string/found_at"
+            android:textSize="@dimen/dialog_fragment_text_size"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

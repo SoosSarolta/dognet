@@ -1,11 +1,13 @@
 package hu.bme.aut.dognet.lost_n_found
 
 import android.graphics.BitmapFactory
+import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -30,21 +32,33 @@ class LostDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tvDetailsChip.text = args.itemChipNum.toString()
+        if (args.itemChipNum.toString() != "null")
+            tvDetailsChip.text = args.itemChipNum.toString()
+        else
+            tvDetailsChip.text = " - "
+
         tvDetailsPetName.text = args.petName.toString()
         tvDetailsBreed.text = args.breed.toString()
         tvDetailsSex.text = args.sex.toString()
         tvDetailsOwnerName.text = args.ownerName.toString()
         tvDetailsPhone.text = args.phone.toString()
-        tvDetailsExtraInfo.text = args.extraInfo.toString()
 
-        // TODO crop image to fit
-        // TODO placeholder when there's no photo
-        val imageBytes = android.util.Base64.decode(args.photo.toString(), android.util.Base64.DEFAULT)
-        val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-        photoOfPetImageView.setImageBitmap(decodedImage)
+        if (args.extraInfo.toString() != "null")
+            tvDetailsExtraInfo.text = args.extraInfo.toString()
+        else
+            tvDetailsExtraInfo.text = " - "
 
-        // TODO place title on map (Last seen)
+        if (args.photo.toString() != "null") {
+            val imageBytes =
+                android.util.Base64.decode(args.photo.toString(), android.util.Base64.DEFAULT)
+            val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            photoOfPetImageView.setImageBitmap(decodedImage)
+        }
+        else {
+            photoOfPetImageView.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.placeholder_image, null))
+        }
+
+        // TODO - handle when user input is not location
         if (args.lastSeen.toString() != "null") {
             map.onCreate(savedInstanceState)
             map.onResume()
@@ -55,7 +69,7 @@ class LostDetailsFragment : Fragment() {
                 googleMap = it
 
                 val geocoder = Geocoder(activity)
-                val address = geocoder.getFromLocationName(args.lastSeen.toString(), 3)
+                val address: MutableList<Address>? = geocoder.getFromLocationName(args.lastSeen.toString(), 3)
 
                 if (address != null) {
                     val loc = address[0]
