@@ -37,7 +37,7 @@ class ChipReadDialogFragment : DialogFragment() {
         isCancelable = false
 
         builder.btnStart.setOnClickListener {
-            (parentFragment!!.activity as MainActivity).enableForegroundMode()
+            (activity as MainActivity).enableForegroundMode()
         }
 
         // TODO if parent is FoundMainFragment - stop searching for chip after 10 sec and call noChipFound
@@ -78,7 +78,7 @@ class ChipReadDialogFragment : DialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        (parentFragment!!.activity as MainActivity).disableForegroundMode()
+        (activity as MainActivity).disableForegroundMode()
     }
 
     fun processNFC(messages: Array<Parcelable>?) {

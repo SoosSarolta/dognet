@@ -38,8 +38,8 @@ import kotlinx.android.synthetic.main.fragment_lost_main.*
 import java.io.ByteArrayOutputStream
 
 // TODO link lost & found pages - if chip numbers are alike, notify user and show the appropriate item
-// TODO replace deprecated fragment manager calls
 // TODO migrate to firestore
+// TODO túl sokszor adja hozzá a db-hez fotózás után
 class LostMainFragment : Fragment() {
 
     private lateinit var lostAdapter: LostAdapter
@@ -77,7 +77,7 @@ class LostMainFragment : Fragment() {
 
         fab.setOnClickListener {
             val dialogFragment = LostPetDataFormDialogFragment()
-            fragmentManager?.let { dialogFragment.show(it, "lost_dialog") }
+            (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "lost_dialog") }
         }
 
         initLostEntryListener()
@@ -152,7 +152,7 @@ class LostMainFragment : Fragment() {
 
     private fun openAddImageDialogFragment() {
         val dialogFragment = AddImageDialogFragment()
-        fragmentManager?.let { dialogFragment.show(it, "photo_dialog") }
+        (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "photo_dialog") }
     }
 
     fun takePhotoBtnClicked() {

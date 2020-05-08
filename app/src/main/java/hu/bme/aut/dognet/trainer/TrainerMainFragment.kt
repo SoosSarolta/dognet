@@ -22,15 +22,14 @@ import hu.bme.aut.dognet.util.TRAINER_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_trainer_main.*
 
 // TODO migrate to firestore
-// TODO replace deprecated fragment manager calls
 // TODO when coming back from TrainerDetailsFragment, don't show 'Start new or review' dialog
 class TrainerMainFragment : Fragment() {
     lateinit var trainerAdapter: TrainerAdapter
 
     private lateinit var entry: TrainingsDbEntry
 
-    lateinit var date: String
-    lateinit var group: String
+    private lateinit var date: String
+    private lateinit var group: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_trainer_main, container, false)
@@ -42,7 +41,7 @@ class TrainerMainFragment : Fragment() {
         (activity as MainActivity).setDrawerEnabled(false)
 
         val decisionDialogFragment = NewOrReviewTrainingDialogFragment()
-        fragmentManager?.let { decisionDialogFragment.show(it, "new_or_review_dialog") }
+        (activity as MainActivity).supportFragmentManager.let { decisionDialogFragment.show(it, "new_or_review_dialog") }
     }
 
     fun reviewTrainingBtnPressed() {
@@ -62,7 +61,7 @@ class TrainerMainFragment : Fragment() {
 
     fun startNewTrainingBtnPressed() {
         val dialogFragment = NewTrainingDialogFragment()
-        fragmentManager?.let { dialogFragment.show(it, "new_training_dialog") }
+        (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "new_training_dialog") }
     }
 
     private fun newTrainingCreated(myItem: TrainingsDbEntry) {

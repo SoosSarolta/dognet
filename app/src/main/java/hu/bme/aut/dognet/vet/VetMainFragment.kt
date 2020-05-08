@@ -22,7 +22,6 @@ import hu.bme.aut.dognet.vet.model.VetDbEntry
 import kotlinx.android.synthetic.main.fragment_vet_main.*
 
 // TODO migrate to firestore
-// TODO replace deprecated fragment manager calls
 class VetMainFragment : Fragment() {
     //lateinit var db: DatabaseReference
     //lateinit var db: FirebaseFirestore
@@ -30,14 +29,14 @@ class VetMainFragment : Fragment() {
 
     private lateinit var entry: VetDbEntry
 
-    lateinit var chip: String
-    lateinit var petName: String
-    lateinit var breed: String
-    lateinit var petSex: String
-    lateinit var dob: String
-    lateinit var ownerName: String
-    lateinit var address: String
-    lateinit var phone: String
+    private lateinit var chip: String
+    private lateinit var petName: String
+    private lateinit var breed: String
+    private lateinit var petSex: String
+    private lateinit var dob: String
+    private lateinit var ownerName: String
+    private lateinit var address: String
+    private lateinit var phone: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_vet_main, container, false)
@@ -60,7 +59,7 @@ class VetMainFragment : Fragment() {
 
         fab.setOnClickListener {
             val dialogFragment = ChipReadDialogFragment()
-            fragmentManager?.let { dialogFragment.show(it, "dialog") }
+            (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "dialog") }
         }
 
         initVetEntryListener()
@@ -176,7 +175,7 @@ class VetMainFragment : Fragment() {
 
     fun openVetDataForm() {
         val dialogFragment = VetFormDialogFragment()
-        fragmentManager?.let { dialogFragment.show(it, "data_dialog_vet") }
+        (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "data_dialog_vet") }
     }
 
     private fun initVetEntryListener() {

@@ -90,7 +90,8 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        val fragment = supportFragmentManager.fragments[0].childFragmentManager.fragments[1] as ChipReadDialogFragment
+        //val fragment = supportFragmentManager.fragments[0].childFragmentManager.fragments[1] as ChipReadDialogFragment
+        val fragment = supportFragmentManager.fragments[1] as ChipReadDialogFragment
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent!!.action)
             fragment.processNFC(intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES))

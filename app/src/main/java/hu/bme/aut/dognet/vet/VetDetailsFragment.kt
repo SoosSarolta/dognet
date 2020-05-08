@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.vet.EditMedRecordDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.vet.EditVaccinationsDialogFragment
@@ -14,7 +15,6 @@ import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.VET_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_vet_details.*
 
-// TODO replace deprecated fragment manager calls
 class VetDetailsFragment : Fragment() {
 
     private val args: VetDetailsFragmentArgs by navArgs()
@@ -53,21 +53,19 @@ class VetDetailsFragment : Fragment() {
 
         for (x in args.vaccNames.indices)
             vaccinations.add(args.vaccNames[x] + " - " + args.vaccDates[x])
-            //etDetailsVaccinations.setText(args.vaccNames[x] + " - " + args.vaccDates[x] + "\n")
 
         for (x in args.medRecords)
             records.add(x)
-            //etDetailsMedRecord.setText(x + "\n")
 
-        adapterVacc = ArrayAdapter<String>(activity!!, android.R.layout.simple_list_item_1, vaccinations)
+        adapterVacc = ArrayAdapter(activity!!, android.R.layout.simple_list_item_1, vaccinations)
         vaccListView.adapter = adapterVacc
 
-        adapterMed = ArrayAdapter<String>(activity!!, android.R.layout.simple_list_item_1, records)
+        adapterMed = ArrayAdapter(activity!!, android.R.layout.simple_list_item_1, records)
         medRecListView.adapter = adapterMed
 
         btnEditVaccinations.setOnClickListener {
             val dialogFragment = EditVaccinationsDialogFragment()
-            fragmentManager?.let { dialogFragment.show(it, "vacc_dialog_vet") }
+            (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "vacc_dialog_vet") }
         }
 
         btnEditMedRecord.setOnClickListener {
@@ -77,7 +75,7 @@ class VetDetailsFragment : Fragment() {
             myArgs.putString("chipNum", args.itemChipNum.toString())
             dialogFragment.arguments = myArgs
 
-            fragmentManager?.let { dialogFragment.show(it, "med_dialog_vet") }
+            (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "med_dialog_vet") }
         }
     }
 

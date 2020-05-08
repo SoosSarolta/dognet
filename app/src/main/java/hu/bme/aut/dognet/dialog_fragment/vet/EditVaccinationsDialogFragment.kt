@@ -32,7 +32,7 @@ class EditVaccinationsDialogFragment : DialogFragment() {
             val currentDay = currentDate.get(Calendar.DAY_OF_MONTH)
 
             val datePicker = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, myear, mmonth, mday ->
-                builder.etVaccDate.setText("" + mday + " - " + (mmonth + 1) + " - " + myear)
+                builder.etVaccDate.setText(getString(R.string.date_format, mday, mmonth + 1, myear))
             }, currentYear, currentMonth, currentDay)
 
             datePicker.datePicker.maxDate = currentDate.timeInMillis
@@ -49,8 +49,7 @@ class EditVaccinationsDialogFragment : DialogFragment() {
 
                 dismiss()
 
-                val f =
-                    activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
+                val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
                 if (f is VetDetailsFragment)
                     f.setVaccination(vaccMap)

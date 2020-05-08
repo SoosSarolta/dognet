@@ -38,7 +38,6 @@ import hu.bme.aut.dognet.util.REQUEST_CODE_STORAGE
 import kotlinx.android.synthetic.main.fragment_found_main.*
 import java.io.ByteArrayOutputStream
 
-// TODO replace deprecated fragment manager calls
 class FoundMainFragment : Fragment() {
 
     private lateinit var foundAdapter: FoundAdapter
@@ -74,7 +73,7 @@ class FoundMainFragment : Fragment() {
 
         fab.setOnClickListener {
             val dialogFragment = ChipReadDialogFragment()
-            fragmentManager?.let { dialogFragment.show(it, "dialog") }
+            (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "dialog") }
         }
 
         initFoundEntryListener()
@@ -154,12 +153,12 @@ class FoundMainFragment : Fragment() {
 
     private fun openFoundDataForm() {
         val dialogFragment = FoundPetDataFormDialogFragment()
-        fragmentManager?.let { dialogFragment.show(it, "found_dialog") }
+        (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "found_dialog") }
     }
 
     private fun openAddImageDialogFragment() {
         val dialogFragment = AddImageDialogFragment()
-        fragmentManager?.let { dialogFragment.show(it, "photo_dialog") }
+        (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "photo_dialog") }
     }
 
     fun makePhotoBtnClicked() {

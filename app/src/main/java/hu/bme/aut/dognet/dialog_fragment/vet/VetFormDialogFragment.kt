@@ -42,7 +42,7 @@ class VetFormDialogFragment : DialogFragment() {
             val currentDay = currentDate.get(Calendar.DAY_OF_MONTH)
 
             val datePicker = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, myear, mmonth, mday ->
-                builder.dobEditText.setText("" + mday + " - " + (mmonth + 1) + " - " + myear)
+                builder.dobEditText.setText(getString(R.string.date_format, mday, mmonth + 1, myear))
             }, currentYear, currentMonth, currentDay)
 
             datePicker.datePicker.maxDate = currentDate.timeInMillis

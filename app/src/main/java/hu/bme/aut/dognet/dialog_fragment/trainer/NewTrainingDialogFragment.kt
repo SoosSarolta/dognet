@@ -37,15 +37,15 @@ class NewTrainingDialogFragment : DialogFragment() {
             val currentDay = currentDate.get(Calendar.DAY_OF_MONTH)
 
             val datePicker = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, myear, mmonth, mday ->
-                builder.etTrainingDate.setText("" + mday + " - " + (mmonth + 1) + " - " + myear)
+                builder.etTrainingDate.setText(getString(R.string.date_format, mday, mmonth + 1, myear))
             }, currentYear, currentMonth, currentDay)
 
             datePicker.show()
         }
 
-        builder.btnOkTraining.setOnClickListener {
-            val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
+        val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
+        builder.btnOkTraining.setOnClickListener {
             if (f is TrainerMainFragment) {
                 validate()
 
@@ -65,7 +65,11 @@ class NewTrainingDialogFragment : DialogFragment() {
         }
 
         builder.btnCancelTraining.setOnClickListener {
-            dismiss()
+            if (f is TrainerMainFragment) {
+                dismiss()
+
+                f.reviewTrainingBtnPressed()
+            }
         }
 
         return builder

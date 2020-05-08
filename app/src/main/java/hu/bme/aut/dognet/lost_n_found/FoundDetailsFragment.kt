@@ -61,7 +61,7 @@ class FoundDetailsFragment : Fragment() {
             photoOfPetImageView.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.placeholder_image, null))
         }
 
-        // TODO - handle if user input is not location
+        // TODO - handle if no (valid) location is given
         if (args.foundAt.toString() != "null") {
             map.onCreate(savedInstanceState)
             map.onResume()
@@ -74,7 +74,7 @@ class FoundDetailsFragment : Fragment() {
                 val geocoder = Geocoder(activity)
                 val address: MutableList<Address>? = geocoder.getFromLocationName(args.foundAt.toString(), 3)
 
-                if (address != null) {
+                if (address != null && address.size > 0) {
                     val loc = address[0]
                     val latitude = loc.latitude
                     val longitude = loc.longitude

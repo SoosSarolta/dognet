@@ -12,6 +12,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.trainer.TrainerFormDialogFragment
@@ -22,7 +23,6 @@ import hu.bme.aut.dognet.util.TRAINER_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_trainer_details.*
 import kotlinx.android.synthetic.main.fragment_trainer_details.fab
 
-// TODO replace deprecated fragment manager calls
 class TrainerDetailsFragment : Fragment() {
 
     private val args: TrainerDetailsFragmentArgs by navArgs()
@@ -58,7 +58,7 @@ class TrainerDetailsFragment : Fragment() {
 
         fab.setOnClickListener {
             val dialogFragment = ChipReadDialogFragment()
-            fragmentManager?.let { dialogFragment.show(it, "dialog") }
+            (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "dialog") }
         }
 
         initDogsInTrainingEntryListener()
@@ -75,7 +75,7 @@ class TrainerDetailsFragment : Fragment() {
 
     fun openTrainerDataForm() {
         val dialogFragment = TrainerFormDialogFragment()
-        fragmentManager?.let { dialogFragment.show(it, "data_dialog_trainer") }
+        (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "data_dialog_trainer") }
     }
 
     fun setData(petName: String, breed: String, ownerName: String, phoneNum: String, petGroup: String) {
