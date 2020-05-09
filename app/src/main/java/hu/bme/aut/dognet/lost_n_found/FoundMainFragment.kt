@@ -20,10 +20,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
@@ -31,7 +31,6 @@ import hu.bme.aut.dognet.dialog_fragment.lost_n_found.AddImageDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.lost_n_found.FoundPetDataFormDialogFragment
 import hu.bme.aut.dognet.lost_n_found.adapter.FoundAdapter
 import hu.bme.aut.dognet.lost_n_found.model.FoundDbEntry
-import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.FOUND_FIREBASE_ENTRY
 import hu.bme.aut.dognet.util.REQUEST_CODE_CAMERA
 import hu.bme.aut.dognet.util.REQUEST_CODE_STORAGE
@@ -40,9 +39,8 @@ import java.io.ByteArrayOutputStream
 
 class FoundMainFragment : Fragment() {
 
+    private lateinit var db: FirebaseFirestore
     private lateinit var foundAdapter: FoundAdapter
-
-    private lateinit var entry: FoundDbEntry
 
     private lateinit var chip: String
     private lateinit var breed: String
@@ -51,6 +49,7 @@ class FoundMainFragment : Fragment() {
     private lateinit var extraInfo: String
 
     private var photo: Bitmap? = null
+    private var photoString: String? = null
 
     private var imageFromGallery = false
     private var noChip = false
@@ -61,6 +60,8 @@ class FoundMainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        db = Firebase.firestore
 
         foundAdapter = FoundAdapter(activity!!.applicationContext) { item: FoundDbEntry -> foundDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
@@ -80,16 +81,6 @@ class FoundMainFragment : Fragment() {
     }
 
     private fun addDbEntry() {
-        DB.child(FOUND_FIREBASE_ENTRY).push().key ?: return
-
-        entry = FoundDbEntry.create()
-
-        entry.chipNum = this.chip
-        entry.breed = this.breed
-        entry.sex = this.sex
-        entry.foundAt = this.foundAt
-        entry.additionalInfo = this.extraInfo
-
         val baos = ByteArrayOutputStream()
         val imageEncoded: String
         if (this.photo != null) {
@@ -99,18 +90,38 @@ class FoundMainFragment : Fragment() {
                 this.photo!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
 
             imageEncoded = android.util.Base64.encodeToString(baos.toByteArray(), android.util.Base64.DEFAULT)
-            entry.photo = imageEncoded
+            this.photoString = imageEncoded
         }
         else
-            entry.photo = null
+            this.photoString = null
 
-        val pets: MutableMap<String, FoundDbEntry> = HashMap()
+        val entry = hashMapOf(
+            "chipNum" to this.chip,
+            "breed" to this.breed,
+            "sex" to this.sex,
+            "foundAt" to this.foundAt,
+            "additionalInfo" to this.extraInfo,
+            "photo" to this.photoString
+        )
+
+        val foundEntry = FoundDbEntry.create()
+        foundEntry.chipNum = entry["chipNum"].toString()
+        foundEntry.breed = entry["breed"].toString()
+        foundEntry.sex = entry["sex"].toString()
+        foundEntry.foundAt = entry["foundAt"].toString()
+        foundEntry.additionalInfo = entry["additionalInfo"].toString()
+        foundEntry.photo = entry["photo"].toString()
+
         if (!noChip) {
-            pets[this.chip] = entry
-
-            val ref = DB.child(FOUND_FIREBASE_ENTRY)
-            ref.updateChildren(pets as Map<String, Any>)
-            Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+            db.collection(FOUND_FIREBASE_ENTRY).document(this.chip).set(entry)
+                .addOnSuccessListener {
+                    Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                    foundAdapter.addEntry(foundEntry)
+                    foundAdapter.notifyDataSetChanged()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(activity, "Error!", Toast.LENGTH_LONG).show()
+                }
         }
         else {
             // TODO - no chip in pet
@@ -222,21 +233,11 @@ class FoundMainFragment : Fragment() {
     }
 
     private fun initFoundEntryListener() {
-        FirebaseDatabase.getInstance().getReference(FOUND_FIREBASE_ENTRY)
-            .addChildEventListener(object: ChildEventListener {
-                override fun onChildAdded(dataSnaphot: DataSnapshot, s: String?) {
-                    val newEntry = dataSnaphot.getValue<FoundDbEntry>(FoundDbEntry::class.java)
-                    foundAdapter.addEntry(newEntry)
-                }
-
-                override fun onChildChanged(p0: DataSnapshot, p1: String?) { }
-
-                override fun onChildMoved(p0: DataSnapshot, p1: String?) { }
-
-                override fun onChildRemoved(p0: DataSnapshot) { }
-
-                override fun onCancelled(p0: DatabaseError) { }
-            })
+        db.collection(FOUND_FIREBASE_ENTRY).get()
+            .addOnSuccessListener {result ->
+                for (document in result)
+                    foundAdapter.addEntry(document.toObject())
+            }
     }
 
     private fun isPermissionAllowed(permissionType: String): Boolean {

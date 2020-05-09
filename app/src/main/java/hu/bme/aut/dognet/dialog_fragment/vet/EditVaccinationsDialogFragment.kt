@@ -9,7 +9,7 @@ import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.vet.VetDetailsFragment
 import kotlinx.android.synthetic.main.edit_vacc_dialog_fragment.*
 import java.util.*
-import kotlin.collections.HashMap
+import kotlin.collections.ArrayList
 
 class EditVaccinationsDialogFragment : DialogFragment() {
 
@@ -44,15 +44,15 @@ class EditVaccinationsDialogFragment : DialogFragment() {
             validate()
 
             if (flag) {
-                val vaccMap: MutableMap<String, String> = HashMap()
-                vaccMap[builder.etVaccName.text.toString()] = builder.etVaccDate.text.toString()
+                val vaccList: MutableList<String> = ArrayList()
+                vaccList.add(builder.etVaccName.text.toString() + " : " + builder.etVaccDate.text.toString())
 
                 dismiss()
 
                 val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
                 if (f is VetDetailsFragment)
-                    f.setVaccination(vaccMap)
+                    f.setVaccination(vaccList)
             }
         }
 

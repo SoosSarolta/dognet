@@ -80,10 +80,7 @@
             app:argType="string"
             app:nullable="true" />
         <argument
-            android:name="vaccNames"
-            app:argType="string[]" />
-        <argument
-            android:name="vaccDates"
+            android:name="vaccinations"
             app:argType="string[]" />
         <argument
             android:name="medRecords"

@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.vet.EditMedRecordDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.vet.EditVaccinationsDialogFragment
-import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.VET_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_vet_details.*
 
@@ -22,6 +24,7 @@ class VetDetailsFragment : Fragment() {
     private var vaccinations: MutableList<String> = ArrayList()
     private var records: MutableList<String> = ArrayList()
 
+    private lateinit var db: FirebaseFirestore
     private lateinit var adapterVacc: ArrayAdapter<String>
     private lateinit var adapterMed: ArrayAdapter<String>
 
@@ -31,6 +34,8 @@ class VetDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        db = Firebase.firestore
 
         tvDetailsChip.text = args.itemChipNum.toString()
         tvDetailsPetName.text = args.petName.toString()
@@ -51,8 +56,8 @@ class VetDetailsFragment : Fragment() {
         tvDetailsAddress.text = args.ownerAddress.toString()
         tvDetailsPhone.text = args.ownerPhone.toString()
 
-        for (x in args.vaccNames.indices)
-            vaccinations.add(args.vaccNames[x] + " - " + args.vaccDates[x])
+        for (x in args.vaccinations)
+            vaccinations.add(x)
 
         for (x in args.medRecords)
             records.add(x)
@@ -79,19 +84,15 @@ class VetDetailsFragment : Fragment() {
         }
     }
 
-    fun setVaccination(vacc: MutableMap<String, String>) {
-        val ref = DB.child(VET_FIREBASE_ENTRY).child(args.itemChipNum.toString())
-        val update: MutableMap<String, MutableMap<String, String>> = HashMap()
-
-        vacc.forEach { vaccinations.add(it.key + " - " + it.value) }
+    fun setVaccination(vacc: MutableList<String>) {
+        vacc.forEach { vaccinations.add(it) }
         adapterVacc.notifyDataSetChanged()
 
-        for (x in args.vaccNames.indices)
-            vacc[args.vaccNames[x]] = args.vaccDates[x]
+        for (x in args.vaccinations)
+            vacc.add(x)
 
-        update["vaccinations"] = vacc
-
-        ref.updateChildren(update as Map<String, Any>)
+        val ref = db.collection(VET_FIREBASE_ENTRY).document(args.itemChipNum.toString())
+        ref.update("vaccinations", vaccinations)
 
         // TODO reach VetMainFragment
         /*val f = parentFragment?.parentFragmentManager?.fragments
@@ -101,9 +102,6 @@ class VetDetailsFragment : Fragment() {
     }
 
     fun setMedRecord(rec: MutableList<String>) {
-        val ref = DB.child(VET_FIREBASE_ENTRY).child(args.itemChipNum.toString())
-        val update: MutableMap<String, MutableList<String>> = HashMap()
-
         for (r in rec)
             records.add(r)
         adapterMed.notifyDataSetChanged()
@@ -111,9 +109,8 @@ class VetDetailsFragment : Fragment() {
         for (x in args.medRecords)
             rec.add(x)
 
-        update["medRecord"] = rec
-
-        ref.updateChildren(update as Map<String, Any>)
+        val ref = db.collection(VET_FIREBASE_ENTRY).document(args.itemChipNum.toString())
+        ref.update("medRecord", records)
 
         // TODO reach VetMainFragment
         /*val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]

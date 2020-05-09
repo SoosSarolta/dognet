@@ -1,7 +1,6 @@
 package hu.bme.aut.dognet.vet
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,25 +8,24 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import hu.bme.aut.dognet.MainActivity
-import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.vet.VetFormDialogFragment
-import hu.bme.aut.dognet.util.DB
+import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.util.VET_FIREBASE_ENTRY
 import hu.bme.aut.dognet.vet.adapter.VetAdapter
 import hu.bme.aut.dognet.vet.model.VetDbEntry
 import kotlinx.android.synthetic.main.fragment_vet_main.*
 
-// TODO migrate to firestore
 class VetMainFragment : Fragment() {
-    //lateinit var db: DatabaseReference
-    //lateinit var db: FirebaseFirestore
-    lateinit var vetAdapter: VetAdapter
 
-    private lateinit var entry: VetDbEntry
+    private lateinit var db: FirebaseFirestore
+    private lateinit var vetAdapter: VetAdapter
 
     private lateinit var chip: String
     private lateinit var petName: String
@@ -45,8 +43,7 @@ class VetMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //db = FirebaseDatabase.getInstance().reference
-        //db = Firebase.firestore
+        db = Firebase.firestore
 
         vetAdapter = VetAdapter(activity!!.applicationContext) { item: VetDbEntry -> vetDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
@@ -66,7 +63,10 @@ class VetMainFragment : Fragment() {
     }
 
     private fun addDbEntry() {
-        /*val entry = hashMapOf(
+        val vacc: MutableList<String> = ArrayList()
+        val medRec: MutableList<String> = ArrayList()
+
+        val entry = hashMapOf(
             "chipNum" to this.chip,
             "petName" to this.petName,
             "breed" to this.breed,
@@ -74,45 +74,33 @@ class VetMainFragment : Fragment() {
             "dob" to this.dob,
             "ownerName" to this.ownerName,
             "ownerAddress" to this.address,
-            "phoneNum" to this.phone
+            "phoneNum" to this.phone,
+            "vaccinations" to vacc,
+            "medRecord" to medRec
         )
 
         val vetEntry = VetDbEntry.create()
-        vetEntry.chipNum = entry["chipNum"]
-        vetEntry.petName = entry["petName"]
-        vetEntry.breed = entry["breed"]
-        vetEntry.sex = entry["sex"]
-        vetEntry.dob = entry["dob"]
-        vetEntry.ownerName = entry["ownerName"]
-        vetEntry.ownerAddress = entry["ownerAddress"]
-        vetEntry.phoneNum = entry["phoneNum"]
+        vetEntry.chipNum = entry["chipNum"].toString()
+        vetEntry.petName = entry["petName"].toString()
+        vetEntry.breed = entry["breed"].toString()
+        vetEntry.sex = entry["sex"].toString()
+        vetEntry.dob = entry["dob"].toString()
+        vetEntry.ownerName = entry["ownerName"].toString()
+        vetEntry.ownerAddress = entry["ownerAddress"].toString()
+        vetEntry.phoneNum = entry["phoneNum"].toString()
 
-        db.collection(VET_FIREBASE_ENTRY).add(entry)
-            .addOnSuccessListener { Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show() }
-            .addOnFailureListener { Toast.makeText(this.activity!!, "Error!", Toast.LENGTH_LONG).show() }*/
+        vetEntry.vaccinations = vacc
+        vetEntry.medRecord = medRec
 
-        DB.child(VET_FIREBASE_ENTRY).push().key ?: return
-
-        entry = VetDbEntry.create()
-
-        entry.chipNum = this.chip
-        entry.petName = this.petName
-        entry.breed = this.breed
-        entry.sex = this.petSex
-        entry.dob = this.dob
-        entry.ownerName = this.ownerName
-        entry.ownerAddress = this.address
-        entry.phoneNum = this.phone
-
-        entry.vaccinations = HashMap()
-        entry.medRecord = ArrayList()
-
-        val pets: MutableMap<String, VetDbEntry> = HashMap()
-        pets[this.chip] = entry
-
-        val ref = DB.child(VET_FIREBASE_ENTRY)
-        ref.updateChildren(pets as Map<String, Any>)
-        Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+        db.collection(VET_FIREBASE_ENTRY).document(this.chip).set(entry)
+            .addOnSuccessListener {
+                Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+                vetAdapter.addEntry(vetEntry)
+                vetAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this.activity!!, "Error!", Toast.LENGTH_LONG).show()
+            }
     }
 
     /*fun setVaccinations(vacc: MutableMap<String, String>) {
@@ -146,31 +134,22 @@ class VetMainFragment : Fragment() {
     fun checkEntryAlreadyInDb(chipNum: String, callback: Callback) {
         chip = chipNum
 
-        /*val chipNumRef = db.collection(VET_FIREBASE_ENTRY)
+        val chipNumRef = db.collection(VET_FIREBASE_ENTRY)
         val query = chipNumRef.whereEqualTo("chipNum", chipNum)
         query.get().addOnCompleteListener {
             if (it.isSuccessful) {
-                for (dsnap in it.result!!) run {
-                    val tempChip = dsnap.getString("chipNum")
-                    if (tempChip.equals(chipNum))
-                        flag = 1
+                if (it.result!!.isEmpty) {
+                    callback.onCallback()
+                }
+                else {
+                    for (dsnap in it.result!!) {
+                        val tempChip = dsnap.getString("chipNum")
+                        if (tempChip.equals(chipNum))
+                            Toast.makeText(activity, "Pet already added!", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
-        }*/
-
-        val chipNumRef = DB.child(VET_FIREBASE_ENTRY).child(chipNum)
-        chipNumRef.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                Log.d("Firebase", "Database Error!")
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (!snapshot.exists())
-                    callback.onCallback()
-                else
-                    Toast.makeText(activity, "Pet already added!", Toast.LENGTH_LONG).show()
-            }
-        })
+        }
     }
 
     fun openVetDataForm() {
@@ -179,30 +158,14 @@ class VetMainFragment : Fragment() {
     }
 
     private fun initVetEntryListener() {
-        /*db.collection(VET_FIREBASE_ENTRY).get()
+        db.collection(VET_FIREBASE_ENTRY).get()
             .addOnSuccessListener { result ->
                 for (document in result)
-                    vetAdapter.addEntry(document.toObject())
-            }*/
-
-        FirebaseDatabase.getInstance().getReference(VET_FIREBASE_ENTRY)
-            .addChildEventListener(object : ChildEventListener {
-                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                    val newEntry = dataSnapshot.getValue<VetDbEntry>(VetDbEntry::class.java)
-                    vetAdapter.addEntry(newEntry)
-                }
-
-                override fun onChildChanged(p0: DataSnapshot, p1: String?) {}
-
-                override fun onChildRemoved(p0: DataSnapshot) {}
-
-                override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
-
-                override fun onCancelled(p0: DatabaseError) {}
-            })
+                        vetAdapter.addEntry(document.toObject())
+            }
     }
 
     private fun vetDbEntryClicked(item: VetDbEntry) {
-        findNavController().navigate(VetMainFragmentDirections.actionVetMainFragmentToVetDetailsFragment(item.chipNum, item.petName, item.breed, item.sex, item.ownerName, item.ownerAddress, item.phoneNum, item.dob, item.vaccinations.keys.toTypedArray(), item.vaccinations.values.toTypedArray(), item.medRecord.toTypedArray()))
+        findNavController().navigate(VetMainFragmentDirections.actionVetMainFragmentToVetDetailsFragment(item.chipNum, item.petName, item.breed, item.sex, item.ownerName, item.ownerAddress, item.phoneNum, item.dob, item.vaccinations.toTypedArray(), item.medRecord.toTypedArray()))
     }
 }

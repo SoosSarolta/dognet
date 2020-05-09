@@ -18,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
+// TODO make dialog fragments modal
 // TODO fill navigation drawer with use cases
 class MainActivity : AppCompatActivity() {
 

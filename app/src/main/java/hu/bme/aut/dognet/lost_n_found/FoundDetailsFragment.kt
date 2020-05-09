@@ -61,31 +61,32 @@ class FoundDetailsFragment : Fragment() {
             photoOfPetImageView.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.placeholder_image, null))
         }
 
-        // TODO - handle if no (valid) location is given
-        if (args.foundAt.toString() != "null") {
-            map.onCreate(savedInstanceState)
-            map.onResume()
+        map.onCreate(savedInstanceState)
+        map.onResume()
 
-            MapsInitializer.initialize(activity!!.applicationContext)
+        MapsInitializer.initialize(activity!!.applicationContext)
 
-            map.getMapAsync {
-                googleMap = it
+        map.getMapAsync {
+            googleMap = it
 
-                val geocoder = Geocoder(activity)
-                val address: MutableList<Address>? = geocoder.getFromLocationName(args.foundAt.toString(), 3)
+            val geocoder = Geocoder(activity)
+            val address: MutableList<Address>? = geocoder.getFromLocationName(args.foundAt.toString(), 3)
 
-                if (address != null && address.size > 0) {
-                    val loc = address[0]
-                    val latitude = loc.latitude
-                    val longitude = loc.longitude
+            if (address != null && address.size > 0) {
+                tvNoLocationSpecified.text = ""
 
-                    val markerPoint = LatLng(latitude, longitude)
-                    googleMap.addMarker(MarkerOptions().position(markerPoint).title("Found At"))
+                val loc = address[0]
+                val latitude = loc.latitude
+                val longitude = loc.longitude
 
-                    val cameraPosition =
-                        CameraPosition.Builder().target(markerPoint).zoom(10F).build()
-                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-                }
+                val markerPoint = LatLng(latitude, longitude)
+                googleMap.addMarker(MarkerOptions().position(markerPoint).title("Found At"))
+
+                val cameraPosition = CameraPosition.Builder().target(markerPoint).zoom(10F).build()
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            }
+            else {
+                tvNoLocationSpecified.text = getString(R.string.no_location)
             }
         }
     }

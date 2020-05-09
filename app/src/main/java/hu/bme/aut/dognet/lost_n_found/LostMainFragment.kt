@@ -20,17 +20,16 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.lost_n_found.AddImageDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.lost_n_found.LostPetDataFormDialogFragment
 import hu.bme.aut.dognet.lost_n_found.adapter.LostAdapter
 import hu.bme.aut.dognet.lost_n_found.model.LostDbEntry
-import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.LOST_FIREBASE_ENTRY
 import hu.bme.aut.dognet.util.REQUEST_CODE_CAMERA
 import hu.bme.aut.dognet.util.REQUEST_CODE_STORAGE
@@ -38,13 +37,10 @@ import kotlinx.android.synthetic.main.fragment_lost_main.*
 import java.io.ByteArrayOutputStream
 
 // TODO link lost & found pages - if chip numbers are alike, notify user and show the appropriate item
-// TODO migrate to firestore
-// TODO túl sokszor adja hozzá a db-hez fotózás után
 class LostMainFragment : Fragment() {
 
+    private lateinit var db: FirebaseFirestore
     private lateinit var lostAdapter: LostAdapter
-
-    private lateinit var entry: LostDbEntry
 
     private lateinit var chip: String
     private lateinit var petName: String
@@ -56,6 +52,7 @@ class LostMainFragment : Fragment() {
     private lateinit var extraInfo: String
 
     private var photo: Bitmap? = null
+    private var photoString: String? = null
 
     private var imageFromGallery = false
 
@@ -65,6 +62,8 @@ class LostMainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        db = Firebase.firestore
 
         lostAdapter = LostAdapter(activity!!.applicationContext) { item: LostDbEntry -> lostDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
@@ -84,19 +83,6 @@ class LostMainFragment : Fragment() {
     }
 
     private fun addDbEntry() {
-        DB.child(LOST_FIREBASE_ENTRY).push().key ?: return
-
-        entry = LostDbEntry.create()
-
-        entry.chipNum = this.chip
-        entry.petName = this.petName
-        entry.breed = this.breed
-        entry.sex = this.sex
-        entry.ownerName = this.ownerName
-        entry.phoneNum = this.phone
-        entry.lastSeen = this.lastSeen
-        entry.additionalInfo = this.extraInfo
-
         val baos =  ByteArrayOutputStream()
         val imageEncoded: String
         if (this.photo != null) {
@@ -106,22 +92,47 @@ class LostMainFragment : Fragment() {
                 this.photo!!.compress(Bitmap.CompressFormat.PNG, 100, baos)
 
             imageEncoded = android.util.Base64.encodeToString(baos.toByteArray(), android.util.Base64.DEFAULT)
-            entry.photo = imageEncoded
+            this.photoString = imageEncoded
         }
         else
-            entry.photo = null
+            this.photoString = null
 
-        val pets: MutableMap<String, LostDbEntry> = HashMap()
+        val entry = hashMapOf(
+            "chipNum" to this.chip,
+            "petName" to this.petName,
+            "breed" to this.breed,
+            "sex" to this.sex,
+            "ownerName" to this.ownerName,
+            "phoneNum" to this.phone,
+            "lastSeen" to this.lastSeen,
+            "additionalInfo" to this.extraInfo,
+            "photo" to this.photoString
+        )
+
+        val lostEntry = LostDbEntry.create()
+        lostEntry.chipNum = entry["chipNum"].toString()
+        lostEntry.petName = entry["petName"].toString()
+        lostEntry.breed = entry["breed"].toString()
+        lostEntry.sex = entry["sex"].toString()
+        lostEntry.ownerName = entry["ownerName"].toString()
+        lostEntry.phoneNum = entry["phoneNum"].toString()
+        lostEntry.lastSeen = entry["lastSeen"].toString()
+        lostEntry.additionalInfo = entry["additionalInfo"].toString()
+        lostEntry.photo = entry["photo"].toString()
 
         if (this.chip == "-") {
-            // TODO - no chip in pet
+           // TODO - no chip in pet
         }
         else {
-            pets[this.chip] = entry
-
-            val ref = DB.child(LOST_FIREBASE_ENTRY)
-            ref.updateChildren(pets as Map<String, Any>)
-            Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
+            db.collection(LOST_FIREBASE_ENTRY).document(this.chip).set(entry)
+                .addOnSuccessListener {
+                    Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                    lostAdapter.addEntry(lostEntry)
+                    lostAdapter.notifyDataSetChanged()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(activity, "Error!", Toast.LENGTH_LONG).show()
+                }
         }
     }
 
@@ -216,21 +227,11 @@ class LostMainFragment : Fragment() {
     }
 
     private fun initLostEntryListener() {
-        FirebaseDatabase.getInstance().getReference(LOST_FIREBASE_ENTRY)
-            .addChildEventListener(object: ChildEventListener {
-                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                    val newEntry = dataSnapshot.getValue<LostDbEntry>(LostDbEntry::class.java)
-                    lostAdapter.addEntry(newEntry)
-                }
-
-                override fun onChildChanged(p0: DataSnapshot, p1: String?) { }
-
-                override fun onChildRemoved(p0: DataSnapshot) { }
-
-                override fun onChildMoved(p0: DataSnapshot, p1: String?) { }
-
-                override fun onCancelled(p0: DatabaseError) { }
-            })
+        db.collection(LOST_FIREBASE_ENTRY).get()
+            .addOnSuccessListener { result ->
+                for (document in result)
+                    lostAdapter.addEntry(document.toObject())
+            }
     }
 
     private fun isPermissionAllowed(permissionType: String): Boolean {

@@ -44,6 +44,7 @@
     <string name="found_at">Found at:</string>
     <string name="photo_of_pet">Photo of pet</string>
     <string name="unkown">Unknown</string>
+    <string name="no_location">No location specified!</string>
 
-    <string name="date_format">%1$d / %2$d / %3$d</string>
+    <string name="date_format">%1$d - %2$d - %3$d</string>
 </resources>

@@ -1,7 +1,6 @@
 package hu.bme.aut.dognet.trainer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,24 +8,26 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.trainer.NewOrReviewTrainingDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.trainer.NewTrainingDialogFragment
 import hu.bme.aut.dognet.trainer.adapter.TrainerAdapter
+import hu.bme.aut.dognet.trainer.model.TrainerDbEntry
 import hu.bme.aut.dognet.trainer.model.TrainingsDbEntry
 import hu.bme.aut.dognet.util.Callback
-import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.TRAINER_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_trainer_main.*
 
-// TODO migrate to firestore
 // TODO when coming back from TrainerDetailsFragment, don't show 'Start new or review' dialog
 class TrainerMainFragment : Fragment() {
-    lateinit var trainerAdapter: TrainerAdapter
 
-    private lateinit var entry: TrainingsDbEntry
+    private lateinit var db: FirebaseFirestore
+    private lateinit var trainerAdapter: TrainerAdapter
 
     private lateinit var date: String
     private lateinit var group: String
@@ -39,6 +40,8 @@ class TrainerMainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as MainActivity).setDrawerEnabled(false)
+
+        db = Firebase.firestore
 
         val decisionDialogFragment = NewOrReviewTrainingDialogFragment()
         (activity as MainActivity).supportFragmentManager.let { decisionDialogFragment.show(it, "new_or_review_dialog") }
@@ -78,23 +81,30 @@ class TrainerMainFragment : Fragment() {
     }
 
     private fun addDbEntry() {
-        DB.child(TRAINER_FIREBASE_ENTRY).push().key ?: return
+        val pets: MutableList<TrainerDbEntry> = ArrayList()
 
-        entry = TrainingsDbEntry.create()
+        val entry = hashMapOf(
+            "date" to this.date,
+            "group" to this.group
+        )
 
-        entry.date = this.date
-        entry.group = this.group
+        val trainingsEntry = TrainingsDbEntry.create()
+        trainingsEntry.date = entry["date"].toString()
+        trainingsEntry.group = entry["group"].toString()
 
-        entry.pets = ArrayList()
+        trainingsEntry.pets = pets
 
-        val trainings: MutableMap<String, TrainingsDbEntry> = HashMap()
-        trainings[this.date] = entry
+        db.collection(TRAINER_FIREBASE_ENTRY).document(this.date).set(entry)
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                trainerAdapter.addEntry(trainingsEntry)
+                trainerAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener {
+                Toast.makeText(activity, "Error!", Toast.LENGTH_LONG).show()
+            }
 
-        val ref = DB.child(TRAINER_FIREBASE_ENTRY)
-        ref.updateChildren(trainings as Map<String, Any>)
-        Toast.makeText(this.activity!!, "Entry added to database!", Toast.LENGTH_LONG).show()
-
-        newTrainingCreated(entry)
+        newTrainingCreated(trainingsEntry)
     }
 
     fun setData(date: String, group: String) {
@@ -107,39 +117,30 @@ class TrainerMainFragment : Fragment() {
     fun checkEntryAlreadyInDb(myDate: String, callback: Callback) {
         date = myDate
 
-        val dateRef = DB.child(TRAINER_FIREBASE_ENTRY).child(myDate)
-        dateRef.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                Log.d("Firebase", "Database error!")
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (!snapshot.exists())
+        val dateRef = db.collection(TRAINER_FIREBASE_ENTRY)
+        val query = dateRef.whereEqualTo("date", myDate)
+        query.get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                if (it.result!!.isEmpty) {
                     callback.onCallback()
+                }
                 else {
-                    Toast.makeText(activity!!, "Training already added!", Toast.LENGTH_LONG).show()
-                    reviewTrainingBtnPressed()
+                    for (dsnap in it.result!!) {
+                        val tempDate = dsnap.getString("date")
+                        if (tempDate.equals(myDate))
+                            Toast.makeText(activity, "Training already added!", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
-        })
+        }
     }
 
     private fun initTrainerEntryListener() {
-        FirebaseDatabase.getInstance().getReference(TRAINER_FIREBASE_ENTRY)
-            .addChildEventListener(object: ChildEventListener {
-                override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                    val newEntry = dataSnapshot.getValue<TrainingsDbEntry>(TrainingsDbEntry::class.java)
-                    trainerAdapter.addEntry(newEntry)
-                }
-
-                override fun onChildChanged(p0: DataSnapshot, p1: String?) { }
-
-                override fun onChildMoved(p0: DataSnapshot, p1: String?) { }
-
-                override fun onChildRemoved(p0: DataSnapshot) { }
-
-                override fun onCancelled(p0: DatabaseError) { }
-            })
+        db.collection(TRAINER_FIREBASE_ENTRY).get()
+            .addOnSuccessListener { result ->
+                for (document in result)
+                    trainerAdapter.addEntry(document.toObject())
+            }
     }
 
     private fun trainerDbEntryClicked(item: TrainingsDbEntry) {

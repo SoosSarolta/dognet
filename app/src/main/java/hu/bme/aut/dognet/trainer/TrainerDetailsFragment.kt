@@ -8,26 +8,25 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.trainer.TrainerFormDialogFragment
 import hu.bme.aut.dognet.trainer.adapter.DogsInTrainingAdapter
 import hu.bme.aut.dognet.trainer.model.TrainerDbEntry
-import hu.bme.aut.dognet.util.DB
 import hu.bme.aut.dognet.util.TRAINER_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_trainer_details.*
-import kotlinx.android.synthetic.main.fragment_trainer_details.fab
 
 class TrainerDetailsFragment : Fragment() {
 
     private val args: TrainerDetailsFragmentArgs by navArgs()
 
-    lateinit var petsInTrainingAdapter: DogsInTrainingAdapter
+    private lateinit var db: FirebaseFirestore
+    private lateinit var petsInTrainingAdapter: DogsInTrainingAdapter
 
     private var petsList: MutableList<String> = ArrayList()
     private var pets: MutableList<TrainerDbEntry> = ArrayList()
@@ -45,6 +44,8 @@ class TrainerDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        db = Firebase.firestore
 
         tvDetailsTrainingDate.text = args.itemDate.toString()
         tvDetailsTrainingGroup.text = args.trainingGroup.toString()
@@ -94,7 +95,6 @@ class TrainerDetailsFragment : Fragment() {
 
     private fun refreshDbEntry() {
         val myDate = args.itemDate.toString()
-        val dateRef = DB.child(TRAINER_FIREBASE_ENTRY).child(myDate)
 
         val entry = TrainerDbEntry.create()
         entry.chipNum = this.chip
@@ -106,33 +106,23 @@ class TrainerDetailsFragment : Fragment() {
 
         entry.trainings = ArrayList()
 
-        val update: MutableMap<String, MutableList<TrainerDbEntry>> = HashMap()
-
         pets.add(entry)
-        update["pets"] = pets
-        dateRef.updateChildren(update as Map<String, Any>)
+
+        val ref = db.collection(TRAINER_FIREBASE_ENTRY).document(myDate).collection("pets").document((pets.size).toString())
+        ref.set(entry)
+
+        petsInTrainingAdapter.addEntry(entry)
+        petsInTrainingAdapter.notifyDataSetChanged()
 
         // TODO reach TrainerMainFragment
     }
 
     private fun initDogsInTrainingEntryListener() {
-        FirebaseDatabase.getInstance().getReference(TRAINER_FIREBASE_ENTRY)
-            .child(args.itemDate.toString())
-            .child("pets")
-            .addChildEventListener(object: ChildEventListener {
-                override fun onChildAdded(dataSnaphot: DataSnapshot, s: String?) {
-                    val newEntry = dataSnaphot.getValue<TrainerDbEntry>(TrainerDbEntry::class.java)
-                    petsInTrainingAdapter.addEntry(newEntry)
-                }
-
-                override fun onChildChanged(p0: DataSnapshot, p1: String?) { }
-
-                override fun onChildRemoved(p0: DataSnapshot) { }
-
-                override fun onChildMoved(p0: DataSnapshot, p1: String?) { }
-
-                override fun onCancelled(p0: DatabaseError) { }
-            })
+        db.collection(TRAINER_FIREBASE_ENTRY).document(args.itemDate.toString()).collection("pets").get()
+            .addOnSuccessListener { result ->
+                for (document in result)
+                    petsInTrainingAdapter.addEntry(document.toObject())
+            }
     }
 
     private fun trainerDbEntryClicked(item: TrainerDbEntry) {
