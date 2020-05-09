@@ -52,6 +52,11 @@ class FoundDetailsFragment : Fragment() {
         else
             tvDetailsExtraInfo.text = " - "
 
+        if (args.phone.toString() != "null")
+            tvDetailsPhone.text = args.phone.toString()
+        else
+            tvDetailsPhone.text = " - "
+
         if (args.photo.toString() != "null") {
             val imageBytes = android.util.Base64.decode(args.photo.toString(), android.util.Base64.DEFAULT)
             val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)

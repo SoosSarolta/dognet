@@ -15,6 +15,7 @@ class FoundPetDataFormDialogFragment : DialogFragment() {
 
     private var breed: String = ""
     private var sex: String = ""
+    private var phone: String = ""
     private var foundAt: String = ""
     private var extraInfo: String = ""
 
@@ -42,11 +43,13 @@ class FoundPetDataFormDialogFragment : DialogFragment() {
             if (builder.additionalInfoEditText.text.isNotEmpty())
                 extraInfo = builder.additionalInfoEditText.text.toString()
 
+            phone = builder.phoneNumEditText.text.toString()
+
             dismiss()
 
             val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
-            (f as FoundMainFragment).setData(breed, sex, foundAt, extraInfo)
+            (f as FoundMainFragment).setData(breed, sex, phone, foundAt, extraInfo)
         }
 
         return builder

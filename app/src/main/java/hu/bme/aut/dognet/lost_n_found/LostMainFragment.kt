@@ -27,20 +27,21 @@ import com.google.firebase.ktx.Firebase
 import hu.bme.aut.dognet.MainActivity
 import hu.bme.aut.dognet.R
 import hu.bme.aut.dognet.dialog_fragment.lost_n_found.AddImageDialogFragment
+import hu.bme.aut.dognet.dialog_fragment.lost_n_found.LostAndFoundDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.lost_n_found.LostPetDataFormDialogFragment
 import hu.bme.aut.dognet.lost_n_found.adapter.LostAdapter
 import hu.bme.aut.dognet.lost_n_found.model.LostDbEntry
-import hu.bme.aut.dognet.util.LOST_FIREBASE_ENTRY
-import hu.bme.aut.dognet.util.REQUEST_CODE_CAMERA
-import hu.bme.aut.dognet.util.REQUEST_CODE_STORAGE
+import hu.bme.aut.dognet.util.*
 import kotlinx.android.synthetic.main.fragment_lost_main.*
 import java.io.ByteArrayOutputStream
 
-// TODO link lost & found pages - if chip numbers are alike, notify user and show the appropriate item
 class LostMainFragment : Fragment() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var lostAdapter: LostAdapter
+
+    private lateinit var entry: HashMap<String, String?>
+    private lateinit var lostEntry: LostDbEntry
 
     private lateinit var chip: String
     private lateinit var petName: String
@@ -82,7 +83,8 @@ class LostMainFragment : Fragment() {
         initLostEntryListener()
     }
 
-    private fun addDbEntry() {
+    private fun addDbEntry(callbackExistsChip: Callback, callbackNotExistsChip: Callback,
+                           callbackExistsNoChip: Callback, callbackNotExistsNoChip: Callback) {
         val baos =  ByteArrayOutputStream()
         val imageEncoded: String
         if (this.photo != null) {
@@ -97,7 +99,7 @@ class LostMainFragment : Fragment() {
         else
             this.photoString = null
 
-        val entry = hashMapOf(
+        entry = hashMapOf(
             "chipNum" to this.chip,
             "petName" to this.petName,
             "breed" to this.breed,
@@ -109,7 +111,7 @@ class LostMainFragment : Fragment() {
             "photo" to this.photoString
         )
 
-        val lostEntry = LostDbEntry.create()
+        lostEntry = LostDbEntry.create()
         lostEntry.chipNum = entry["chipNum"].toString()
         lostEntry.petName = entry["petName"].toString()
         lostEntry.breed = entry["breed"].toString()
@@ -121,18 +123,46 @@ class LostMainFragment : Fragment() {
         lostEntry.photo = entry["photo"].toString()
 
         if (this.chip == "-") {
-           // TODO - no chip in pet
+            val ref = db.collection(FOUND_FIREBASE_ENTRY)
+            val query1 = ref.whereEqualTo("sex", this.sex)
+            val query2 = query1.whereEqualTo("breed", this.breed)
+            query2.get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    if (it.result!!.isEmpty) {
+                        callbackNotExistsNoChip.onCallback()
+                    }
+                    else {
+                        for (dsnap in it.result!!) {
+                            val tempSex = dsnap.getString("sex")
+                            if (tempSex.equals(this.sex)) {
+                                val tempBreed = dsnap.getString("breed")
+                                if (tempBreed.equals(this.breed)) {
+                                    callbackExistsNoChip.onCallback()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         else {
-            db.collection(LOST_FIREBASE_ENTRY).document(this.chip).set(entry)
-                .addOnSuccessListener {
-                    Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
-                    lostAdapter.addEntry(lostEntry)
-                    lostAdapter.notifyDataSetChanged()
+            val ref = db.collection(FOUND_FIREBASE_ENTRY)
+            val query = ref.whereEqualTo("chipNum", this.chip)
+            query.get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    if (it.result!!.isEmpty) {
+                        callbackNotExistsChip.onCallback()
+                    }
+                    else {
+                        for (dsnap in it.result!!) {
+                            val tempChip = dsnap.getString("chipNum")
+                            if (tempChip.equals(this.chip)) {
+                                callbackExistsChip.onCallback()
+                            }
+                        }
+                    }
                 }
-                .addOnFailureListener {
-                    Toast.makeText(activity, "Error!", Toast.LENGTH_LONG).show()
-                }
+            }
         }
     }
 
@@ -194,7 +224,90 @@ class LostMainFragment : Fragment() {
 
     fun noPhotoBtnClicked() {
         this.photo = null
-        addDbEntry()
+        addDbEntry(object: Callback {
+            override fun onCallback() {
+                db.collection(FOUND_FIREBASE_ENTRY).document(chip).get()
+                    .addOnCompleteListener {task ->
+                        if (task.isSuccessful) {
+                            if (task.result!!.exists()) {
+                                val c = task.result!!.getString("chipNum")
+                                val s = task.result!!.getString("sex")
+                                val b = task.result!!.getString("breed")
+                                val f = task.result!!.getString("foundAt")
+                                val p = task.result!!.getString("phone")
+                                val a = task.result!!.getString("additionalInfo")
+
+                                val dialogFragment = LostAndFoundDialogFragment()
+
+                                val args = Bundle()
+                                args.putString("chipNum", c)
+                                args.putString("sex", s)
+                                args.putString("breed", b)
+                                args.putString("foundAt", f)
+                                args.putString("phone", p)
+                                args.putString("additionalInfo", a)
+
+                                dialogFragment.arguments = args
+
+                                (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "l_n_f_dialog") }
+                            }
+                        }
+                    }
+            }
+        }, object: Callback {
+            override fun onCallback() {
+                db.collection(LOST_FIREBASE_ENTRY).document(chip).set(entry)
+                    .addOnSuccessListener {
+                        Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                        lostAdapter.addEntry(lostEntry)
+                        lostAdapter.notifyDataSetChanged()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(activity, "An error happened!", Toast.LENGTH_LONG).show()
+                    }
+            }
+        }, object: Callback {
+            override fun onCallback() {
+                db.collection(FOUND_FIREBASE_ENTRY).document("no chip - " + sex + " < > " + breed).get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            if (task.result!!.exists()) {
+                                val s = task.result!!.getString("sex")
+                                val b = task.result!!.getString("breed")
+                                val f = task.result!!.getString("foundAt")
+                                val p = task.result!!.getString("phone")
+                                val a = task.result!!.getString("additionalInfo")
+
+                                val dialogFragment = LostAndFoundDialogFragment()
+
+                                val args = Bundle()
+                                args.putString("chipNum", " - ")
+                                args.putString("sex", s)
+                                args.putString("breed", b)
+                                args.putString("foundAt", f)
+                                args.putString("phone", p)
+                                args.putString("additionalInfo", a)
+
+                                dialogFragment.arguments = args
+
+                                (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "l_n_f_dialog") }
+                            }
+                        }
+                    }
+            }
+        }, object: Callback {
+            override fun onCallback() {
+                db.collection(LOST_FIREBASE_ENTRY).document("no chip - " + sex + " < > " + breed).set(entry)
+                    .addOnSuccessListener {
+                        Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                        lostAdapter.addEntry(lostEntry)
+                        lostAdapter.notifyDataSetChanged()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(activity, "An error happened!", Toast.LENGTH_LONG).show()
+                    }
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -204,7 +317,90 @@ class LostMainFragment : Fragment() {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             this.photo = imageBitmap
 
-            addDbEntry()
+            addDbEntry(object: Callback {
+                override fun onCallback() {
+                    db.collection(FOUND_FIREBASE_ENTRY).document(chip).get()
+                        .addOnCompleteListener {task ->
+                            if (task.isSuccessful) {
+                                if (task.result!!.exists()) {
+                                    val c = task.result!!.getString("chipNum")
+                                    val s = task.result!!.getString("sex")
+                                    val b = task.result!!.getString("breed")
+                                    val f = task.result!!.getString("foundAt")
+                                    val p = task.result!!.getString("phone")
+                                    val a = task.result!!.getString("additionalInfo")
+
+                                    val dialogFragment = LostAndFoundDialogFragment()
+
+                                    val args = Bundle()
+                                    args.putString("chipNum", c)
+                                    args.putString("sex", s)
+                                    args.putString("breed", b)
+                                    args.putString("foundAt", f)
+                                    args.putString("phone", p)
+                                    args.putString("additionalInfo", a)
+
+                                    dialogFragment.arguments = args
+
+                                    (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "l_n_f_dialog") }
+                                }
+                            }
+                        }
+                }
+            }, object: Callback {
+                override fun onCallback() {
+                    db.collection(LOST_FIREBASE_ENTRY).document(chip).set(entry)
+                        .addOnSuccessListener {
+                            Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                            lostAdapter.addEntry(lostEntry)
+                            lostAdapter.notifyDataSetChanged()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(activity, "An error happened!", Toast.LENGTH_LONG).show()
+                        }
+                }
+            }, object: Callback {
+                override fun onCallback() {
+                    db.collection(FOUND_FIREBASE_ENTRY).document("no chip - $sex < > $breed").get()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                if (task.result!!.exists()) {
+                                    val s = task.result!!.getString("sex")
+                                    val b = task.result!!.getString("breed")
+                                    val f = task.result!!.getString("foundAt")
+                                    val p = task.result!!.getString("phone")
+                                    val a = task.result!!.getString("additionalInfo")
+
+                                    val dialogFragment = LostAndFoundDialogFragment()
+
+                                    val args = Bundle()
+                                    args.putString("chipNum", " - ")
+                                    args.putString("sex", s)
+                                    args.putString("breed", b)
+                                    args.putString("foundAt", f)
+                                    args.putString("phone", p)
+                                    args.putString("additionalInfo", a)
+
+                                    dialogFragment.arguments = args
+
+                                    (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "l_n_f_dialog") }
+                                }
+                            }
+                        }
+                }
+            }, object: Callback {
+                override fun onCallback() {
+                    db.collection(LOST_FIREBASE_ENTRY).document("no chip - $sex < > $breed").set(entry)
+                        .addOnSuccessListener {
+                            Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                            lostAdapter.addEntry(lostEntry)
+                            lostAdapter.notifyDataSetChanged()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(activity, "An error happened!", Toast.LENGTH_LONG).show()
+                        }
+                }
+            })
         }
 
         if (requestCode == REQUEST_CODE_STORAGE && resultCode == RESULT_OK) {
@@ -222,7 +418,90 @@ class LostMainFragment : Fragment() {
                 }
             }
 
-            addDbEntry()
+            addDbEntry(object: Callback {
+                override fun onCallback() {
+                    db.collection(FOUND_FIREBASE_ENTRY).document(chip).get()
+                        .addOnCompleteListener {task ->
+                            if (task.isSuccessful) {
+                                if (task.result!!.exists()) {
+                                    val c = task.result!!.getString("chipNum")
+                                    val s = task.result!!.getString("sex")
+                                    val b = task.result!!.getString("breed")
+                                    val f = task.result!!.getString("foundAt")
+                                    val p = task.result!!.getString("phone")
+                                    val a = task.result!!.getString("additionalInfo")
+
+                                    val dialogFragment = LostAndFoundDialogFragment()
+
+                                    val args = Bundle()
+                                    args.putString("chipNum", c)
+                                    args.putString("sex", s)
+                                    args.putString("breed", b)
+                                    args.putString("foundAt", f)
+                                    args.putString("phone", p)
+                                    args.putString("additionalInfo", a)
+
+                                    dialogFragment.arguments = args
+
+                                    (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "l_n_f_dialog") }
+                                }
+                            }
+                        }
+                }
+            }, object: Callback {
+                override fun onCallback() {
+                    db.collection(LOST_FIREBASE_ENTRY).document(chip).set(entry)
+                        .addOnSuccessListener {
+                            Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                            lostAdapter.addEntry(lostEntry)
+                            lostAdapter.notifyDataSetChanged()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(activity, "An error happened!", Toast.LENGTH_LONG).show()
+                        }
+                }
+            }, object: Callback {
+                override fun onCallback() {
+                    db.collection(FOUND_FIREBASE_ENTRY).document("no chip - $sex < > $breed").get()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                if (task.result!!.exists()) {
+                                    val s = task.result!!.getString("sex")
+                                    val b = task.result!!.getString("breed")
+                                    val f = task.result!!.getString("foundAt")
+                                    val p = task.result!!.getString("phone")
+                                    val a = task.result!!.getString("additionalInfo")
+
+                                    val dialogFragment = LostAndFoundDialogFragment()
+
+                                    val args = Bundle()
+                                    args.putString("chipNum", " - ")
+                                    args.putString("sex", s)
+                                    args.putString("breed", b)
+                                    args.putString("foundAt", f)
+                                    args.putString("phone", p)
+                                    args.putString("additionalInfo", a)
+
+                                    dialogFragment.arguments = args
+
+                                    (activity as MainActivity).supportFragmentManager.let { dialogFragment.show(it, "l_n_f_dialog") }
+                                }
+                            }
+                        }
+                }
+            }, object: Callback {
+                override fun onCallback() {
+                    db.collection(LOST_FIREBASE_ENTRY).document("no chip - $sex < > $breed").set(entry)
+                        .addOnSuccessListener {
+                            Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
+                            lostAdapter.addEntry(lostEntry)
+                            lostAdapter.notifyDataSetChanged()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(activity, "An error happened!", Toast.LENGTH_LONG).show()
+                        }
+                }
+            })
         }
     }
 

@@ -11,7 +11,6 @@ import kotlin.system.exitProcess
 
 /// Splash screen
 
-// TODO - this does not show
 class SplashActivity : AppCompatActivity() {
 
     private val handler: Handler = Handler()

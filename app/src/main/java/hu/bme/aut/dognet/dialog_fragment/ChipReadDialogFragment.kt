@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.nfc.NdefMessage
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.os.Vibrator
 import android.util.Log
@@ -25,6 +26,8 @@ class ChipReadDialogFragment : DialogFragment() {
 
     private lateinit var builder: Dialog
 
+    private var handler: Handler = Handler()
+
     private var chipRead = false
     private var chipNum = ""
 
@@ -36,17 +39,24 @@ class ChipReadDialogFragment : DialogFragment() {
 
         isCancelable = false
 
+        val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
+
         builder.btnStart.setOnClickListener {
             (activity as MainActivity).enableForegroundMode()
+            if (f is FoundMainFragment) {
+                handler.postDelayed({
+                    dismiss()
+                    Toast.makeText(activity, "Timeout! No chip found!", Toast.LENGTH_LONG).show()
+                    f.noChipFound()
+                }, 10000)
+            }
         }
 
-        // TODO if parent is FoundMainFragment - stop searching for chip after 10 sec and call noChipFound
         builder.btnCancel.setOnClickListener {
             if (!chipRead) {
                 dismiss()
             }
             else {
-                val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
                 if (f is VetMainFragment) {
                     dismiss()
                     f.checkEntryAlreadyInDb(chipNum, object : Callback {
@@ -100,6 +110,7 @@ class ChipReadDialogFragment : DialogFragment() {
                             chipNum = r.text
                             chipRead = true
                             builder.btnCancel.text = getString(R.string.ok)
+                            handler.removeCallbacksAndMessages(null)
                         }
                         else {
                             Toast.makeText(activity!!.applicationContext, "Empty chip number!", Toast.LENGTH_LONG).show()

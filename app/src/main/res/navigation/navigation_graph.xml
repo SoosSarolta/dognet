@@ -211,5 +211,9 @@
             android:name="photo"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="phone"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

@@ -47,4 +47,7 @@
     <string name="no_location">No location specified!</string>
 
     <string name="date_format">%1$d - %2$d - %3$d</string>
+    <string name="pet_found">Pet already found! See info below:</string>
+    <string name="call_number">Call number</string>
+    <string name="pet_lost">Pet\'s been already reported! See info below:</string>
 </resources>

@@ -8,6 +8,7 @@ class FoundDbEntry {
     var chipNum: String? = null
     var breed: String? = null
     var sex: String? = null
+    var phone: String? = null
     var foundAt: String? = null
 
     var photo: String? = null
