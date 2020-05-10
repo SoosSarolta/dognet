@@ -66,21 +66,26 @@ class LostDetailsFragment : Fragment() {
         map.getMapAsync {
             googleMap = it
 
-            val geocoder = Geocoder(activity)
-            val address: MutableList<Address>? = geocoder.getFromLocationName(args.lastSeen.toString(), 3)
+            if (args.lastSeen.toString() != "") {
+                val geocoder = Geocoder(activity)
+                val address: MutableList<Address>? = geocoder.getFromLocationName(args.lastSeen.toString(), 3)
 
-            if (address != null && address.size > 0) {
-                tvNoLocationSpecified.text = ""
+                if (address != null && address.size > 0) {
+                    tvNoLocationSpecified.text = ""
 
-                val loc = address[0]
-                val latitude = loc.latitude
-                val longitude = loc.longitude
+                    val loc = address[0]
+                    val latitude = loc.latitude
+                    val longitude = loc.longitude
 
-                val markerPoint = LatLng(latitude, longitude)
-                googleMap.addMarker(MarkerOptions().position(markerPoint).title("Last Seen"))
+                    val markerPoint = LatLng(latitude, longitude)
+                    googleMap.addMarker(MarkerOptions().position(markerPoint).title("Last Seen"))
 
-                val cameraPosition = CameraPosition.Builder().target(markerPoint).zoom(10F).build()
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                    val cameraPosition =
+                        CameraPosition.Builder().target(markerPoint).zoom(10F).build()
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                } else {
+                    tvNoLocationSpecified.text = getString(R.string.no_location)
+                }
             }
             else {
                 tvNoLocationSpecified.text = getString(R.string.no_location)

@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var nfcAdapter: NfcAdapter
     private lateinit var nfcPendingIntent: PendingIntent
 
+    private var receiveNfc = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -116,13 +118,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nfcAdapter.disableForegroundDispatch(this)
     }
 
+    fun setReceiveNfc(value: Boolean) {
+        receiveNfc = value
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        val fragment = supportFragmentManager.fragments[1] as ChipReadDialogFragment
+        if (receiveNfc) {
+            val fragment = supportFragmentManager.fragments[1] as ChipReadDialogFragment
 
-        // TODO csak akkor foglalkozzunk vele, ha chipRead dialog nyitva van ???
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent!!.action)
-            fragment.processNFC(intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES))
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent!!.action) {
+                fragment.processNFC(intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES))
+            }
+        }
     }
 }

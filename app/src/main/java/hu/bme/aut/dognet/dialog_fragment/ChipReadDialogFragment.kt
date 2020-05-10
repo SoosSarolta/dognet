@@ -39,6 +39,8 @@ class ChipReadDialogFragment : DialogFragment() {
 
         isCancelable = false
 
+        (activity as MainActivity).setReceiveNfc(true)
+
         val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
 
         builder.btnStart.setOnClickListener {
@@ -89,6 +91,7 @@ class ChipReadDialogFragment : DialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         (activity as MainActivity).disableForegroundMode()
+        (activity as MainActivity).setReceiveNfc(false)
     }
 
     fun processNFC(messages: Array<Parcelable>?) {
