@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import hu.bme.aut.dognet.R
@@ -12,6 +13,10 @@ import kotlinx.android.synthetic.main.fragment_trainer_details_details.*
 class TrainerDetailsDetailsFragment : Fragment() {
 
     private val args: TrainerDetailsDetailsFragmentArgs by navArgs()
+
+    private val trainings: MutableList<String> = ArrayList()
+
+    private lateinit var adapterTrainings: ArrayAdapter<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_trainer_details_details, container, false)
@@ -33,8 +38,12 @@ class TrainerDetailsDetailsFragment : Fragment() {
 
         tvDetailsDetailsGroup.text = args.group.toString()
 
-        // TODO how to add training dates
-        for (x in args.trainingDates.indices)
-            etDetailsDetailsTrainings.setText(args.trainingDates[x] + "\n")
+        for (x in args.trainingDates)
+           trainings.add(x)
+
+
+
+        adapterTrainings = ArrayAdapter(activity!!, android.R.layout.simple_list_item_1, trainings)
+        trainingsListView.adapter = adapterTrainings
     }
 }

@@ -94,7 +94,7 @@ class TrainerMainFragment : Fragment() {
 
         trainingsEntry.pets = pets
 
-        db.collection(TRAINER_FIREBASE_ENTRY).document(this.date).set(entry)
+        db.collection(TRAINER_FIREBASE_ENTRY).document((this.date)).set(entry)
             .addOnSuccessListener {
                 Toast.makeText(activity, "Entry added to database!", Toast.LENGTH_LONG).show()
                 trainerAdapter.addEntry(trainingsEntry)

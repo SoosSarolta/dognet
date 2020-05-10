@@ -104,7 +104,7 @@ class TrainerDetailsFragment : Fragment() {
         entry.phoneNum = this.phoneNum
         entry.group = this.petGroup
 
-        entry.trainings = ArrayList()
+        entry.trainings = addTrainingDates()
 
         pets.add(entry)
 
@@ -113,8 +113,37 @@ class TrainerDetailsFragment : Fragment() {
 
         petsInTrainingAdapter.addEntry(entry)
         petsInTrainingAdapter.notifyDataSetChanged()
+    }
 
-        // TODO reach TrainerMainFragment
+    private fun addTrainingDates(): MutableList<String> {
+        val trainings: MutableList<String> = ArrayList()
+
+        // TODO a firestore collection-ben az adott dátum előtt lévő bejegyzésekhez nem kerül be a tréning
+        db.collection(TRAINER_FIREBASE_ENTRY).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (!(task.result!!.isEmpty)) {
+                        task.result!!.forEach { doc ->
+                            doc.reference.collection("pets").get()
+                                .addOnCompleteListener {
+                                    if (it.isSuccessful) {
+                                        if (!(it.result!!.isEmpty)) {
+                                            for (d in it.result!!) {
+                                                val tempChip = d.getString("chipNum")
+                                                if (tempChip.equals(this.chip)) {
+                                                    trainings.add(doc.getString("date")!!)
+                                                    d.reference.update("trainings", trainings)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                        }
+                    }
+                }
+            }
+
+        return trainings
     }
 
     private fun initDogsInTrainingEntryListener() {

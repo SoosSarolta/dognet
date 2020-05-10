@@ -26,4 +26,7 @@
     <dimen name="vet_form_popup_height">400dp</dimen>
 
     <dimen name="lost_and_found_popup_height">370dp</dimen>
+
+    <dimen name="about_popup_width">300dp</dimen>
+    <dimen name="about_popup_height">315dp</dimen>
 </resources>

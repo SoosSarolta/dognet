@@ -50,4 +50,9 @@
     <string name="pet_found">Pet already found! See info below:</string>
     <string name="call_number">Call number</string>
     <string name="pet_lost">Pet\'s been already reported! See info below:</string>
+    <string name="about">About</string>
+    <string name="find_shelters">Find shelters</string>
+    <string name="find_vets_nearby">Find vets nearby</string>
+    <string name="project_information">Project information:</string>
+    <string name="about_string">This app was created to help the work of vetenarians and dog trainers. A registry can be led to keep up-to-date information about pets. Besides, people who find dogs on the streets can easily get in touch with the owners.</string>
 </resources>

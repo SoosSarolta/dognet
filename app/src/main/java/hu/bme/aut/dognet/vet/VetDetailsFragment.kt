@@ -93,12 +93,6 @@ class VetDetailsFragment : Fragment() {
 
         val ref = db.collection(VET_FIREBASE_ENTRY).document(args.itemChipNum.toString())
         ref.update("vaccinations", vaccinations)
-
-        // TODO reach VetMainFragment
-        /*val f = parentFragment?.parentFragmentManager?.fragments
-
-        if (f is VetMainFragment)
-            f.setVaccinations(vacc)*/
     }
 
     fun setMedRecord(rec: MutableList<String>) {
@@ -111,11 +105,5 @@ class VetDetailsFragment : Fragment() {
 
         val ref = db.collection(VET_FIREBASE_ENTRY).document(args.itemChipNum.toString())
         ref.update("medRecord", records)
-
-        // TODO reach VetMainFragment
-        /*val f = activity!!.supportFragmentManager.fragments[0].childFragmentManager.fragments[0]
-
-        if (f is VetMainFragment)
-            f.setMedRecord(rec)*/
     }
 }
