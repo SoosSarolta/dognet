@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.found_db_entry_list_item.view.*
 class FoundAdapter(private val context: Context, private val clickListener: (FoundDbEntry) -> Unit) : RecyclerView.Adapter<FoundAdapter.ViewHolder>() {
 
     private val petsList: MutableList<FoundDbEntry> = mutableListOf()
-    private var lastPosition = -1
+
+    private var flag = false
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvChipNum: TextView = itemView.tvChipNum
@@ -29,6 +30,7 @@ class FoundAdapter(private val context: Context, private val clickListener: (Fou
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        flag = false
         val view = LayoutInflater.from(parent.context).inflate(R.layout.found_db_entry_list_item, parent, false)
         return ViewHolder(view)
     }
@@ -41,7 +43,7 @@ class FoundAdapter(private val context: Context, private val clickListener: (Fou
 
         holder.bind(petsList[position], clickListener)
 
-        setAnimation(holder.itemView, position)
+        setAnimation(holder.itemView)
     }
 
     override fun getItemCount() = petsList.size
@@ -50,14 +52,16 @@ class FoundAdapter(private val context: Context, private val clickListener: (Fou
         foundDbEntry ?: return
 
         petsList.add(foundDbEntry)
+
+        flag = true
+
         notifyDataSetChanged()
     }
 
-    private fun setAnimation(viewToAnimate: View, position: Int) {
-        if (position > lastPosition) {
+    private fun setAnimation(viewToAnimate: View) {
+        if (!flag) {
             val animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
             viewToAnimate.startAnimation(animation)
-            lastPosition = position
         }
     }
 }

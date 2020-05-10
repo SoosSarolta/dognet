@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.vet_db_entry_list_item.view.*
 class VetAdapter(private val context: Context, private val clickListener: (VetDbEntry) -> Unit) : RecyclerView.Adapter<VetAdapter.ViewHolder>() {
 
     private val petsList: MutableList<VetDbEntry> = mutableListOf()
-    private var lastPosition = -1
+
+    private var flag = false
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvChipNum: TextView = itemView.tvChipNum
@@ -29,6 +30,7 @@ class VetAdapter(private val context: Context, private val clickListener: (VetDb
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        flag = false
         val view = LayoutInflater.from(parent.context).inflate(R.layout.vet_db_entry_list_item, parent, false)
         return ViewHolder(view)
     }
@@ -41,7 +43,7 @@ class VetAdapter(private val context: Context, private val clickListener: (VetDb
 
         holder.bind(petsList[position], clickListener)
 
-        setAnimation(holder.itemView, position)
+        setAnimation(holder.itemView)
     }
 
     override fun getItemCount() = petsList.size
@@ -50,14 +52,16 @@ class VetAdapter(private val context: Context, private val clickListener: (VetDb
         vetDbEntry ?: return
 
         petsList.add(vetDbEntry)
+
+        flag = true
+
         notifyDataSetChanged()
     }
 
-    private fun setAnimation(viewToAnimate: View, position: Int) {
-        if (position > lastPosition) {
+    private fun setAnimation(viewToAnimate: View) {
+        if (!flag) {
             val animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
             viewToAnimate.startAnimation(animation)
-            lastPosition = position
         }
     }
 }

@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val fragment = supportFragmentManager.fragments[1] as ChipReadDialogFragment
 
+        // TODO csak akkor foglalkozzunk vele, ha chipRead dialog nyitva van ???
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent!!.action)
             fragment.processNFC(intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES))
     }

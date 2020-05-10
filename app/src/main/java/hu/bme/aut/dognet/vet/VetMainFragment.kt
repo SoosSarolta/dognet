@@ -47,8 +47,8 @@ class VetMainFragment : Fragment() {
 
         vetAdapter = VetAdapter(activity!!.applicationContext) { item: VetDbEntry -> vetDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
-            reverseLayout = true
-            stackFromEnd = true
+            reverseLayout = false
+            stackFromEnd = false
         }
         recyclerView.adapter = vetAdapter
 

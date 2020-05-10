@@ -199,7 +199,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/last_seen_at"
+            android:text="@string/lost_from"
             android:textSize="@dimen/dialog_fragment_text_size"
             android:textStyle="bold"
             android:textColor="@color/colorAccent2" />

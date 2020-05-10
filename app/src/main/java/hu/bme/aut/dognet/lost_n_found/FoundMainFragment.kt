@@ -68,8 +68,8 @@ class FoundMainFragment : Fragment() {
 
         foundAdapter = FoundAdapter(activity!!.applicationContext) { item: FoundDbEntry -> foundDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
-            reverseLayout = true
-            stackFromEnd = true
+            reverseLayout = false
+            stackFromEnd = false
         }
         recyclerView.adapter = foundAdapter
 

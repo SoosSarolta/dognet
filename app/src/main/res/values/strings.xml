@@ -55,4 +55,5 @@
     <string name="find_vets_nearby">Find vets nearby</string>
     <string name="project_information">Project information:</string>
     <string name="about_string">This app was created to help the work of vetenarians and dog trainers. A registry can be led to keep up-to-date information about pets. Besides, people who find dogs on the streets can easily get in touch with the owners.</string>
+    <string name="lost_from">Lost from:</string>
 </resources>

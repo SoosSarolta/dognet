@@ -23,7 +23,6 @@ import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.util.TRAINER_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_trainer_main.*
 
-// TODO when coming back from TrainerDetailsFragment, don't show 'Start new or review' dialog
 class TrainerMainFragment : Fragment() {
 
     private lateinit var db: FirebaseFirestore
@@ -32,8 +31,22 @@ class TrainerMainFragment : Fragment() {
     private lateinit var date: String
     private lateinit var group: String
 
+    private var dialogShown = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_trainer_main, container, false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val decisionDialogFragment = NewOrReviewTrainingDialogFragment()
+        (activity as MainActivity).supportFragmentManager.let { decisionDialogFragment.show(it, "new_or_review_dialog") }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialogShown = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,15 +56,15 @@ class TrainerMainFragment : Fragment() {
 
         db = Firebase.firestore
 
-        val decisionDialogFragment = NewOrReviewTrainingDialogFragment()
-        (activity as MainActivity).supportFragmentManager.let { decisionDialogFragment.show(it, "new_or_review_dialog") }
+        if (dialogShown)
+            reviewTrainingBtnPressed()
     }
 
     fun reviewTrainingBtnPressed() {
         trainerAdapter = TrainerAdapter(activity!!.applicationContext) { item: TrainingsDbEntry -> trainerDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
-            reverseLayout = true
-            stackFromEnd = true
+            reverseLayout = false
+            stackFromEnd = false
         }
         recyclerView.adapter = trainerAdapter
 

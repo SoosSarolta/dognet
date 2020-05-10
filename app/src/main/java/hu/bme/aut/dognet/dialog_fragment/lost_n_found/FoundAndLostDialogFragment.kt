@@ -4,12 +4,20 @@ import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import hu.bme.aut.dognet.R
+import hu.bme.aut.dognet.util.FOUND_FIREBASE_ENTRY
+import hu.bme.aut.dognet.util.LOST_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.found_and_lost_dialog_fragment.*
 
 class FoundAndLostDialogFragment : DialogFragment() {
+
+    private lateinit var db: FirebaseFirestore
 
     private lateinit var builder: Dialog
 
@@ -18,6 +26,8 @@ class FoundAndLostDialogFragment : DialogFragment() {
 
         builder = Dialog(activity!!)
         builder.setContentView(view)
+
+        db = Firebase.firestore
 
         isCancelable = false
 
@@ -33,6 +43,25 @@ class FoundAndLostDialogFragment : DialogFragment() {
             builder.btnCall.isEnabled = false
 
         builder.btnCall.setOnClickListener {
+            if (arguments?.getString("chipNum").equals(" - ")) {
+                db.collection(LOST_FIREBASE_ENTRY).document("no chip - " + arguments?.getString("sex") + " < > " + arguments?.getString("breed")).delete()
+                    .addOnSuccessListener {
+                        Log.d("FoundAndLostDialog", "Document deleted!")
+                    }
+                    .addOnFailureListener {
+                        Log.d("FoundAndLostDialog", "Error deleting document!")
+                    }
+            }
+            else {
+                db.collection(LOST_FIREBASE_ENTRY).document(arguments?.getString(("chipNum"))!!).delete()
+                    .addOnSuccessListener {
+                        Log.d("FoundAndLostDialog", "Document deleted!")
+                    }
+                    .addOnFailureListener {
+                        Log.d("FoundAndLostDialog", "Error deleting document!")
+                    }
+            }
+
             val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + Uri.encode(builder.tvPhoneLost.text.toString().trim())))
             startActivity(intent)
         }

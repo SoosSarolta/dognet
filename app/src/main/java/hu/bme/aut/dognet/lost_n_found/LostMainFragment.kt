@@ -68,8 +68,8 @@ class LostMainFragment : Fragment() {
 
         lostAdapter = LostAdapter(activity!!.applicationContext) { item: LostDbEntry -> lostDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
-            reverseLayout = true
-            stackFromEnd = true
+            reverseLayout = false
+            stackFromEnd = false
         }
         recyclerView.adapter = lostAdapter
 

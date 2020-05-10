@@ -18,6 +18,7 @@ import hu.bme.aut.dognet.dialog_fragment.ChipReadDialogFragment
 import hu.bme.aut.dognet.dialog_fragment.trainer.TrainerFormDialogFragment
 import hu.bme.aut.dognet.trainer.adapter.DogsInTrainingAdapter
 import hu.bme.aut.dognet.trainer.model.TrainerDbEntry
+import hu.bme.aut.dognet.util.Callback
 import hu.bme.aut.dognet.util.TRAINER_FIREBASE_ENTRY
 import kotlinx.android.synthetic.main.fragment_trainer_details.*
 
@@ -30,6 +31,8 @@ class TrainerDetailsFragment : Fragment() {
 
     private var petsList: MutableList<String> = ArrayList()
     private var pets: MutableList<TrainerDbEntry> = ArrayList()
+
+    private val trainings: MutableList<String> = ArrayList()
 
     private lateinit var chip: String
     private lateinit var petName: String
@@ -52,8 +55,8 @@ class TrainerDetailsFragment : Fragment() {
 
         petsInTrainingAdapter = DogsInTrainingAdapter(activity!!.applicationContext) { item: TrainerDbEntry -> trainerDbEntryClicked(item) }
         recyclerView.layoutManager = LinearLayoutManager(activity).apply {
-            reverseLayout = true
-            stackFromEnd = true
+            reverseLayout = false
+            stackFromEnd = false
         }
         recyclerView.adapter = petsInTrainingAdapter
 
@@ -104,7 +107,34 @@ class TrainerDetailsFragment : Fragment() {
         entry.phoneNum = this.phoneNum
         entry.group = this.petGroup
 
-        entry.trainings = addTrainingDates()
+        addTrainingDates(object: Callback {
+            override fun onCallback() {
+                db.collection(TRAINER_FIREBASE_ENTRY).get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            if (!(task.result!!.isEmpty)) {
+                                task.result!!.forEach { doc ->
+                                    doc.reference.collection("pets").get()
+                                        .addOnCompleteListener {
+                                            if (it.isSuccessful) {
+                                                if (!(it.result!!.isEmpty)) {
+                                                    for (d in it.result!!) {
+                                                        val tempChip = d.getString("chipNum")
+                                                        if (tempChip.equals(chip)) {
+                                                            d.reference.update("trainings", trainings)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                    }
+            }
+        })
+
+        entry.trainings = trainings
 
         pets.add(entry)
 
@@ -115,10 +145,7 @@ class TrainerDetailsFragment : Fragment() {
         petsInTrainingAdapter.notifyDataSetChanged()
     }
 
-    private fun addTrainingDates(): MutableList<String> {
-        val trainings: MutableList<String> = ArrayList()
-
-        // TODO a firestore collection-ben az adott dátum előtt lévő bejegyzésekhez nem kerül be a tréning
+    private fun addTrainingDates(callback: Callback) {
         db.collection(TRAINER_FIREBASE_ENTRY).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -132,18 +159,16 @@ class TrainerDetailsFragment : Fragment() {
                                                 val tempChip = d.getString("chipNum")
                                                 if (tempChip.equals(this.chip)) {
                                                     trainings.add(doc.getString("date")!!)
-                                                    d.reference.update("trainings", trainings)
                                                 }
                                             }
                                         }
                                     }
                                 }
                         }
+                        callback.onCallback()
                     }
                 }
             }
-
-        return trainings
     }
 
     private fun initDogsInTrainingEntryListener() {
